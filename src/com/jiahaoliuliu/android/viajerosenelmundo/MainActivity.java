@@ -1,19 +1,27 @@
 package com.jiahaoliuliu.android.viajerosenelmundo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -30,18 +38,13 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private MenuListAdapter mMenuAdapter;
-	private String[] title;
-	private String[] subtitle;
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	
 	private GoogleMap googleMap;
 	private Marker marker;
-	
-	private static final LatLng MADRID = new LatLng(40.417325, -3.683081);
-	private static final LatLng LONDON = new LatLng(51.511214, -0.119824);
-	private static final LatLng STOCKHOLM = new LatLng(59.32893, 18.06491);
-	
+	private List<Viajero> viajeros;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,13 +52,34 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		// Get the title
 		mTitle = mDrawerTitle = getTitle();
+
+		viajeros = new ArrayList<Viajero>();
 		
+		addData();
+
 		// Get the map
 		googleMap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
-		// Generate content
-		title = new String[] {"Madrid", "London", "Stockholm"};
-		subtitle = new String[] {"Spain", "United Kindom", "Sweden"};
+		// Draw all the points to the map
+		for (Viajero viajeroTmp: viajeros) {
+			googleMap.addMarker(
+					new MarkerOptions()
+						.position(viajeroTmp.getPosition())
+						.title(viajeroTmp.getCity())
+						.snippet(viajeroTmp.getUrl())
+						);
+		}
+
+		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+				// Open a web page
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(marker.getSnippet()));
+				startActivity(intent);
+			}
+		});
 		
 		// Link the content
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -65,7 +89,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		// Set a custom shadow that overlays the main content when the drawer opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		
-		mMenuAdapter = new MenuListAdapter(MainActivity.this, title, subtitle);
+		mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
 		
 		mDrawerList.setAdapter(mMenuAdapter);
 		
@@ -83,8 +107,8 @@ public class MainActivity extends SherlockFragmentActivity {
 				R.drawable.ic_drawer,
 				R.string.drawer_open,
 				R.string.drawer_close) {
-			
-			public void OnDrawerClosed(View view) {
+
+			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
 			}
 			
@@ -96,9 +120,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		};
 		
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
+
 		if (savedInstanceState == null) {
-			selectItem(0);
+			if (!viajeros.isEmpty()) {
+				selectItem(viajeros.get(0));
+			}
 		}
 	}
 
@@ -121,48 +147,18 @@ public class MainActivity extends SherlockFragmentActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(position);
+			selectItem(viajeros.get(position));
 		}
 	}
 	
-	private void selectItem(int position) {
-		if (marker != null) {
-			marker.remove();
-		}
-		switch(position) {
-		case 0:
-			marker = googleMap.addMarker(
-					new MarkerOptions()
-						.position(MADRID)
-					);
-		    // Move the camera instantly to hamburg with a zoom of 15.
-			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MADRID, 15));
-			break;
-		case 1:
-			marker = googleMap.addMarker(
-					
-					new MarkerOptions()
-						.position(LONDON)
-					);
-			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LONDON, 15));
-			break;
-		case 2:
-			marker = googleMap.addMarker(
-					new MarkerOptions()
-						.position(STOCKHOLM)
-						.title("Stockholm")
-					);
-			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(STOCKHOLM, 15));
-			break;
-		}
-
+	private void selectItem(Viajero viajero) {
+		
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(viajero.getPosition(), 15));
 	    // Zoom in, animating the camera.
 		googleMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 
-		mDrawerList.setItemChecked(position, true);
-		
 		// Get the title followed by the position
-		setTitle(title[position]);
+		setTitle(viajero.getCity());
 		
 		// Close drawer
 		mDrawerLayout.closeDrawer(mDrawerList);
@@ -188,4 +184,29 @@ public class MainActivity extends SherlockFragmentActivity {
 		getSupportActionBar().setTitle(mTitle);
 	}
 
+	private void addData() {
+		// Add data
+		Viajero viajero = new Viajero();
+		
+		viajero.setCity("Estocolmo");
+		viajero.setCountry("Suecia");
+		viajero.setPosition(new LatLng(59.32893, 18.06491));
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--estocolmo/609798/");
+		viajeros.add(viajero);
+
+		viajero = new Viajero();
+		viajero.setCity("Berlín");
+		viajero.setCountry("Alemania");
+		viajero.setPosition(new LatLng(52.519171, 13.406091));
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/programa/espanoles-mundo-berlin/889792/");
+		viajeros.add(viajero);
+		
+		viajero = new Viajero();
+		viajero.setCity("Gabón");
+		viajero.setCountry("Gabón");
+		viajero.setPosition(new LatLng(-0.803689, 11.609444));
+		viajero.setUrl("http://www.rtve.es/m/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-gabon/1927330/?media=tve");
+		viajeros.add(viajero);
+		
+	}
 }

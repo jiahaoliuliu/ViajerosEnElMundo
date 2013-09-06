@@ -1,6 +1,9 @@
 package com.jiahaoliuliu.android.viajerosenelmundo;
 
+import java.util.List;
+
 import com.actionbarsherlock.app.SherlockFragment;
+import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,25 +17,23 @@ import android.widget.TextView;
 public class MenuListAdapter extends BaseAdapter {
 
 	// Declare variables
-	Context context;
-	String[] mTitle;
-	String[] mSubTitle;
-	LayoutInflater inflater;
+	private Context context;
+	private List<Viajero> viajeros;
+	private LayoutInflater inflater;
 	
-	public MenuListAdapter(Context context, String[] title, String[] subtitle) {
+	public MenuListAdapter(Context context, List<Viajero> viajeros) {
 		this.context = context;
-		this.mTitle = title;
-		this.mSubTitle = subtitle;
+		this.viajeros = viajeros;
 	}
 	
 	@Override
 	public int getCount() {
-		return mTitle.length;
+		return viajeros.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mTitle[position];
+		return viajeros.get(position);
 	}
 
 	@Override
@@ -45,7 +46,6 @@ public class MenuListAdapter extends BaseAdapter {
 		// Declare Variables
 		TextView txtTitle;
 		TextView txtSubTitle;
-		ImageView imgIcon;
 		
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
@@ -56,8 +56,8 @@ public class MenuListAdapter extends BaseAdapter {
 		txtSubTitle = (TextView)itemView.findViewById(R.id.subtitle);
 
 		// Set the data
-		txtTitle.setText(mTitle[position]);
-		txtSubTitle.setText(mSubTitle[position]);
+		txtTitle.setText(viajeros.get(position).getCity());
+		txtSubTitle.setText(viajeros.get(position).getCountry());
 
 		return itemView;
 		
