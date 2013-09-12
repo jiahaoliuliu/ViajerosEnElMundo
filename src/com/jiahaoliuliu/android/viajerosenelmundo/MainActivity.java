@@ -113,7 +113,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				break;
 			case TELEMADRID:
-				//marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_));
+				// TODO: Set it white
+				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
 			default:
 				Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
 			}
