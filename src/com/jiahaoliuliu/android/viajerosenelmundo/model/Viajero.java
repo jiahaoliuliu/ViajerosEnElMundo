@@ -4,20 +4,36 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Viajero {
 
+	public enum ChannelId {
+		RTVE, CUATRO, TELEMADRID,
+
+		DEFAULT_CHANNEL;
+		
+		public static ChannelId toChannelId(String channelId) {
+			try {
+				return valueOf(channelId);
+			} catch (Exception exception) {
+				return DEFAULT_CHANNEL;
+			}
+		}
+	}
+
 	private String city;
 	private String country;
 	private LatLng position;
+	private ChannelId channel;
 	private String url;
 
 	public Viajero() {
 		super();
 	}
 
-	public Viajero(String city, String country, LatLng position, String url) {
+	public Viajero(String city, String country, LatLng position, ChannelId channel, String url) {
 		super();
 		this.city = city;
 		this.country = country;
 		this.position = position;
+		this.channel = channel;
 		this.url = url;
 	}
 
@@ -45,6 +61,14 @@ public class Viajero {
 		this.position = position;
 	}
 
+	public ChannelId getChannel() {
+		return channel;
+	}
+
+	public void setChannel(ChannelId channel) {
+		this.channel = channel;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -57,6 +81,7 @@ public class Viajero {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((channel == null) ? 0 : channel.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result
@@ -74,6 +99,8 @@ public class Viajero {
 		if (getClass() != obj.getClass())
 			return false;
 		Viajero other = (Viajero) obj;
+		if (channel != other.channel)
+			return false;
 		if (city == null) {
 			if (other.city != null)
 				return false;
@@ -100,7 +127,6 @@ public class Viajero {
 	@Override
 	public String toString() {
 		return "Viajero [city=" + city + ", country=" + country + ", position="
-				+ position + ", url=" + url + "]";
+				+ position + ", channel=" + channel + ", url=" + url + "]";
 	}
-
 }

@@ -44,20 +44,21 @@ public class MenuListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Declare Variables
-		TextView txtTitle;
-		TextView txtSubTitle;
 		
+		Viajero viajero = viajeros.get(position);
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		View itemView = inflater.inflate(R.layout.drawer_list_item, parent, false);
 		
 		// Locate the TextViews
-		txtTitle = (TextView)itemView.findViewById(R.id.title);
-		txtSubTitle = (TextView)itemView.findViewById(R.id.subtitle);
-
+		TextView cityTV = (TextView)itemView.findViewById(R.id.city);
+		TextView countryTV = (TextView)itemView.findViewById(R.id.country);
+		TextView channelTV = (TextView)itemView.findViewById(R.id.channel);
+		
 		// Set the data
-		txtTitle.setText(viajeros.get(position).getCity());
-		txtSubTitle.setText(viajeros.get(position).getCountry());
+		cityTV.setText(viajero.getCity());
+		countryTV.setText(viajero.getCountry());
+		channelTV.setText(viajero.getChannel().toString());
 
 		return itemView;
 		
