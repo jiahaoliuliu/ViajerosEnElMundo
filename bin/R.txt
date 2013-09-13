@@ -294,7 +294,6 @@ int drawable common_signin_btn_text_pressed_light 0x7f020087
 int drawable drawer_shadow 0x7f020088
 int drawable ic_drawer 0x7f020089
 int drawable ic_launcher 0x7f02008a
-int drawable white_pin 0x7f02008b
 int id abs__action_bar 0x7f050024
 int id abs__action_bar_container 0x7f050023
 int id abs__action_bar_subtitle 0x7f050015
