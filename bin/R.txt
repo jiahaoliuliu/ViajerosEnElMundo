@@ -153,8 +153,7 @@ int dimen abs__dropdownitem_text_padding_left 0x7f080008
 int dimen abs__dropdownitem_text_padding_right 0x7f080009
 int dimen abs__search_view_preferred_width 0x7f08000c
 int dimen abs__search_view_text_min_width 0x7f08000b
-int dimen activity_horizontal_margin 0x7f08000f
-int dimen activity_vertical_margin 0x7f080010
+int dimen drawer_size 0x7f08000f
 int drawable abs__ab_bottom_solid_dark_holo 0x7f020000
 int drawable abs__ab_bottom_solid_inverse_holo 0x7f020001
 int drawable abs__ab_bottom_solid_light_holo 0x7f020002
@@ -333,9 +332,9 @@ int id abs__submit_area 0x7f050033
 int id abs__textButton 0x7f050017
 int id abs__title 0x7f05001f
 int id abs__up 0x7f05000f
-int id channel 0x7f050038
+int id channel 0x7f050037
 int id city 0x7f050036
-int id country 0x7f050037
+int id country 0x7f050038
 int id disableHome 0x7f05000d
 int id drawer_layout 0x7f050039
 int id edit_query 0x7f05002a
