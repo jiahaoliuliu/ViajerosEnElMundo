@@ -8,6 +8,8 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +41,7 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -92,123 +95,144 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
         mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-		addData();
-
-		// Get the map
-		googleMap = ((SupportMapFragment)getSupportFragmentManager()
-				.findFragmentById(R.id.map))
-				.getMap();
-
-		// Draw all the points to the map
-		for (Viajero viajeroTmp: viajeros) {
-			Marker marker = googleMap.addMarker(
-					new MarkerOptions()
-						.position(viajeroTmp.getPosition())
-						.title(viajeroTmp.getCity() + ", " + viajeroTmp.getCountry())
-						.snippet(getResources().getString(R.string.marker_instruction))
-						);
-			
-			// Add the data to the hash map
-			urlMaps.put(marker, viajeroTmp.getUrl());
-			markerByLocation.put(viajeroTmp.getPosition(), marker);
-			// Set the icon
-			switch (viajeroTmp.getChannel()) {
-			case RTVE:
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-				break;
-			case CUATRO:
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-				break;
-			case TELEMADRID:
-				// TODO: Set it white
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-				break;
-			default:
-				Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
+	    int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+	    if (isEnabled != ConnectionResult.SUCCESS) {
+	        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(isEnabled, this, 0);
+	        if (errorDialog != null) {
+        		errorDialog.show();
+	        }
+	    } else {
+			// Get the map
+			googleMap = ((SupportMapFragment)getSupportFragmentManager()
+					.findFragmentById(R.id.map))
+					.getMap();
+	
+			if (googleMap == null) {
+			    Toast.makeText(this, getResources().getString(R.string.error_google_maps_not_found), Toast.LENGTH_LONG).show();
+			    finish();
 			}
-		}
-
-		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			
-			@Override
-			public void onInfoWindowClick(Marker marker) {
-				// Open a web page
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse(urlMaps.get(marker)));
-				startActivity(intent);
-			}
-		});
-		
-		// Link the content
-		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
-		mDrawerList = (ListView)findViewById(R.id.listview_drawer);
-
-		mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
-		
-		mDrawerList.setAdapter(mMenuAdapter);
-		
-
-		// If there is not drawer because it is a tablet
-		if (mDrawerLayout != null){
-			// Set a custom shadow that overlays the main content when the drawer opens
-			mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-			// Enable ActionBar app icon to behave as action to toggle nav drawer
-			getSupportActionBar().setHomeButtonEnabled(true);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			
-			// ActionBarDrawerToggle ties together the proper interactions
-			// between the sliding drawer and the action bar app icon
-			mDrawerToggle = new ActionBarDrawerToggle(
-					this,
-					mDrawerLayout,
-					R.drawable.ic_drawer,
-					R.string.drawer_open,
-					R.string.drawer_close) {
-
-				public void onDrawerClosed(View view) {
-					super.onDrawerClosed(view);
-					mDialogText.setVisibility(View.INVISIBLE);
-					mShowing = false;
+			addData();
+	
+			// Draw all the points to the map
+			for (Viajero viajeroTmp: viajeros) {
+				MarkerOptions markerOptions = new MarkerOptions()
+					.position(viajeroTmp.getPosition())
+					.snippet(getResources().getString(R.string.marker_instruction));
+	
+				String city = viajeroTmp.getCity();
+				String country = viajeroTmp.getCountry();
+				if (city.equalsIgnoreCase(country)) {
+					Log.v(LOG_TAG, "The city and the country are equals " + city);
+					markerOptions.title(country);
+				} else {
+					Log.v(LOG_TAG, "The city and the country are not equals. City: " + city + ", Country: " + country);
+					markerOptions.title(city + ", " + country);
 				}
+	
+				Marker marker = googleMap.addMarker(markerOptions);
 				
-				public void onDrawerOpened(View drawerView) {
-					super.onDrawerOpened(drawerView);
-					// Set the title on the action when drawer open
-					getSupportActionBar().setTitle(mDrawerTitle);
-					createBigIndex();
+				// Add the data to the hash map
+				urlMaps.put(marker, viajeroTmp.getUrl());
+				markerByLocation.put(viajeroTmp.getPosition(), marker);
+				// Set the icon
+				switch (viajeroTmp.getChannel()) {
+				case RTVE:
+					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+					break;
+				case CUATRO:
+					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+					break;
+				case TELEMADRID:
+					// TODO: Set it white
+					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+					break;
+				default:
+					Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
 				}
-			};
-			
-			mDrawerLayout.setDrawerListener(mDrawerToggle);
-			mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		} else {
-			createBigIndex();
-			mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-
+			}
+	
+			googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+				
 				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int position, long id) {
-					selectItem(viajeros.get(position));
+				public void onInfoWindowClick(Marker marker) {
+					// Open a web page
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse(urlMaps.get(marker)));
+					startActivity(intent);
 				}
 			});
-		}
-
-		mDrawerList.setOnScrollListener(this);
-
-		if (savedInstanceState == null) {
-			if (!viajeros.isEmpty()) {
-				selectItem(viajeros.get(0));
+			
+			// Link the content
+			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+	
+			mDrawerList = (ListView)findViewById(R.id.listview_drawer);
+	
+			mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
+			
+			mDrawerList.setAdapter(mMenuAdapter);
+			
+	
+			// If there is not drawer because it is a tablet
+			if (mDrawerLayout != null){
+				// Set a custom shadow that overlays the main content when the drawer opens
+				mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+	
+				// Enable ActionBar app icon to behave as action to toggle nav drawer
+				getSupportActionBar().setHomeButtonEnabled(true);
+				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+				
+				// ActionBarDrawerToggle ties together the proper interactions
+				// between the sliding drawer and the action bar app icon
+				mDrawerToggle = new ActionBarDrawerToggle(
+						this,
+						mDrawerLayout,
+						R.drawable.ic_drawer,
+						R.string.drawer_open,
+						R.string.drawer_close) {
+	
+					public void onDrawerClosed(View view) {
+						super.onDrawerClosed(view);
+						mDialogText.setVisibility(View.INVISIBLE);
+						mShowing = false;
+					}
+					
+					public void onDrawerOpened(View drawerView) {
+						super.onDrawerOpened(drawerView);
+						// Set the title on the action when drawer open
+						getSupportActionBar().setTitle(mDrawerTitle);
+						createBigIndex();
+					}
+				};
+				
+				mDrawerLayout.setDrawerListener(mDrawerToggle);
+				mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+	
+			} else {
+				createBigIndex();
+				mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+	
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long id) {
+						selectItem(viajeros.get(position));
+					}
+				});
 			}
+	
+			mDrawerList.setOnScrollListener(this);
+	
+			if (savedInstanceState == null) {
+				if (!viajeros.isEmpty()) {
+					selectItem(viajeros.get(0));
+				}
+			}
+			
+	        LayoutInflater inflate = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	        
+	        mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
+	        mDialogText.setVisibility(View.INVISIBLE);
 		}
-		
-        LayoutInflater inflate = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        
-        mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
-        mDialogText.setVisibility(View.INVISIBLE);
-        
 	}
 
 	private void createBigIndex() {

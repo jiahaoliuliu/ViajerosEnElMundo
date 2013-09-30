@@ -5,5 +5,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="marker_instruction">Haz click aquí para ver el vídeo.</string>
+    <string name="error_google_maps_not_found">Error no se puede enlazar Google maps. Comprueba que lo tenga instalado.</string>
 
 </resources>
