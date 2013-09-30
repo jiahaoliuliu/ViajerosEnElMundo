@@ -42,7 +42,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import android.support.v4.view.GravityCompat;
 
 public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener{
@@ -79,6 +78,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
     private HashMap<Marker, String> urlMaps = new HashMap<Marker, String>();
+    private HashMap<LatLng, Marker> markerByLocation = new HashMap<LatLng, Marker>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +104,13 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 			Marker marker = googleMap.addMarker(
 					new MarkerOptions()
 						.position(viajeroTmp.getPosition())
-						.title(viajeroTmp.getCity())
-						.snippet(viajeroTmp.getCountry())
+						.title(viajeroTmp.getCity() + ", " + viajeroTmp.getCountry())
+						.snippet(getResources().getString(R.string.marker_instruction))
 						);
 			
 			// Add the data to the hash map
 			urlMaps.put(marker, viajeroTmp.getUrl());
-			Log.v(LOG_TAG, String.valueOf(marker.hashCode()));
+			markerByLocation.put(viajeroTmp.getPosition(), marker);
 			// Set the icon
 			switch (viajeroTmp.getChannel()) {
 			case RTVE:
@@ -276,6 +276,12 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 		// Get the title followed by the position
 		setTitle(viajero.getCity());
+		
+		// Show the info windows
+		if (markerByLocation.containsKey(viajero.getPosition())) {
+			Marker marker = markerByLocation.get(viajero.getPosition());
+			marker.showInfoWindow();
+		}
 		
 		if (mDrawerLayout != null) {
 			// Close drawer
