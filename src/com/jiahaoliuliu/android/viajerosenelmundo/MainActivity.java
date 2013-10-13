@@ -222,9 +222,13 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	
 			mDrawerList.setOnScrollListener(this);
 	
+			// Go to the random city
 			if (savedInstanceState == null) {
 				if (!viajeros.isEmpty()) {
-					selectItem(viajeros.get(0));
+					int randomItemPosition = (int)(Math.random() * viajeros.size());
+					Viajero randomCity = viajeros.get(randomItemPosition);
+					Log.v(LOG_TAG, "Go to the random city: " + randomCity.getCity() + " of position " + randomItemPosition);
+					selectItem(randomCity);
 				}
 			}
 			
@@ -1282,6 +1286,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-kuala-lumpur/666885/");
 		viajeros.add(viajero);
 
+		// La Habana
+		viajero = new Viajero();
+		viajero.setCity("La Habana");
+		viajero.setCountry("Cuba");
+		viajero.setPosition(new LatLng(23.1168, -82.388557));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-habana/1046370/");
+		viajeros.add(viajero);
+
+		// Las Vegas
+		viajero = new Viajero();
+		viajero.setCity("Las Vegas");
+		viajero.setCountry("Estados unidos");
+		viajero.setPosition(new LatLng(36.114646, -115.172816));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-vegas/926482/");
+		viajeros.add(viajero);
+
 		// Lisboa
 		viajero = new Viajero();
 		viajero.setCity("Lisboa");
@@ -1325,6 +1347,15 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setPosition(new LatLng(34.052234, -118.243685));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-los-angeles");
+		viajeros.add(viajero);
+
+		// Los Ángeles (Florida)
+		viajero = new Viajero();
+		viajero.setCity("Los Ángeles");
+		viajero.setCountry("Estados Unidos");
+		viajero.setPosition(new LatLng(34.152234, -118.343685));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-angeles/1033993/");
 		viajeros.add(viajero);
 
 		// Los Cayos (Florida)
@@ -1390,6 +1421,33 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20110601/espanoles-mundo-visita-malta-paraiso-piedra-mar/435078.shtml");
 		viajeros.add(viajero);
 
+		// Manaos
+		viajero = new Viajero();
+		viajero.setCity("Manaos");
+		viajero.setCountry("Brasil");
+		viajero.setPosition(new LatLng(-3.106409, -60.02643));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/20111223/manaos-paris-del-amazonas/484395.shtml");
+		viajeros.add(viajero);
+
+		// Medellín
+		viajero = new Viajero();
+		viajero.setCity("Medellín");
+		viajero.setCountry("Columbia");
+		viajero.setPosition(new LatLng(6.235925, -75.575137));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/20120713/medellin-tierra-paisas/546139.shtml");
+		viajeros.add(viajero);
+
+		// Mendoza
+		viajero = new Viajero();
+		viajero.setCity("Mendoza");
+		viajero.setCountry("Argentina");
+		viajero.setPosition(new LatLng(-32.890183, -68.84405));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/20130121/turismo-enologico-argentina/604120.shtml");
+		viajeros.add(viajero);
+
 		// México
 		viajero = new Viajero();
 		viajero.setCity("México");
@@ -1397,6 +1455,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setPosition(new LatLng(23.634501, -102.552784));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-caribe-mexicano");
+		viajeros.add(viajero);
+
+		// México
+		viajero = new Viajero();
+		viajero.setCity("México");
+		viajero.setCountry("México");
+		viajero.setPosition(new LatLng(23.734501, -102.652784));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/20121122/mexico-lindo-querido-tambien-para-espanoles/576441.shtml");
+		viajeros.add(viajero);
+
+		// Miami
+		viajero = new Viajero();
+		viajero.setCity("Miami");
+		viajero.setCountry("Estados Unidos");
+		viajero.setPosition(new LatLng(25.788969, -80.226439));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-miami/1065853/");
 		viajeros.add(viajero);
 
 		// Milán
@@ -1424,6 +1500,15 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setPosition(new LatLng(-34.884106, -56.167969));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-montevideo");
+		viajeros.add(viajero);
+
+		// Montreal
+		viajero = new Viajero();
+		viajero.setCity("Montreal");
+		viajero.setCountry("Canadá");
+		viajero.setPosition(new LatLng(45.50867, -73.553992));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo/595581/");
 		viajeros.add(viajero);
 
 		// Moscú
@@ -1462,6 +1547,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20100418/espanoles-mundo-viaja-a-nepal-pais-casi-legendario-situado-entre-tibet-india/328077.shtml");
 		viajeros.add(viajero);
 
+		// Nicaragua
+		viajero = new Viajero();
+		viajero.setCity("Nicaragua");
+		viajero.setCountry("Nicaragua");
+		viajero.setPosition(new LatLng(12.865416, -85.207229));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-nicaragua/1417683/");
+		viajeros.add(viajero);
+
+		// Nueva Orleans
+		viajero = new Viajero();
+		viajero.setCity("Nueva Orleans");
+		viajero.setCountry("Nicaragua");
+		viajero.setPosition(new LatLng(29.951066, -90.071532));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--nueva-orleans/456110/");
+		viajeros.add(viajero);
+
 		// Nueva York
 		viajero = new Viajero();
 		viajero.setCity("Nueva York");
@@ -1469,6 +1572,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setPosition(new LatLng(40.714353, -74.005973));
 		viajero.setChannel(ChannelId.CUATRO);
 		viajero.setUrl("http://www.cuatro.com/callejeros-viajeros/temporadas/temporada-05/t05xp17-nueva-york-en-alturas/Nueva-York-alturas-on-line_2_1655880176.html");
+		viajeros.add(viajero);
+
+		// Nueva York
+		viajero = new Viajero();
+		viajero.setCity("Nueva York");
+		viajero.setCountry("Estados Unidos");
+		viajero.setPosition(new LatLng(40.814353, -74.105973));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--nueva-york/650404/");
+		viajeros.add(viajero);
+
+		// Nueva York(Navidad)
+		viajero = new Viajero();
+		viajero.setCity("Nueva York(Navidad)");
+		viajero.setCountry("Estados Unidos");
+		viajero.setPosition(new LatLng(40.614353, -73.905973));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/espanoles-en-el-mundo/ny-navidad/");
 		viajeros.add(viajero);
 
 		// Nueva Zelanda
@@ -1496,6 +1617,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setPosition(new LatLng(59.91304138427136, 10.765228271484375));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20110105/oslo-ciudad-protege-espanoles-mundo/392759.shtml");
+		viajeros.add(viajero);
+
+		// Ottawa
+		viajero = new Viajero();
+		viajero.setCity("Ottawa");
+		viajero.setCountry("Canadá");
+		viajero.setPosition(new LatLng(45.42153, -75.697193));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/television/20130204/apariencia-fria-calida-acogida/606497.shtml");
+		viajeros.add(viajero);
+
+		// Panamá
+		viajero = new Viajero();
+		viajero.setCity("Panamá");
+		viajero.setCountry("Panamá");
+		viajero.setPosition(new LatLng(8.994269, -79.518792));
+		viajero.setChannel(ChannelId.RTVE);
+		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--panama/522013/");
 		viajeros.add(viajero);
 
 		// París
