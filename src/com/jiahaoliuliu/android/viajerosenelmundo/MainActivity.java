@@ -52,7 +52,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 	
-	private static final int MENU_BUTTON_ABOUT_ME_ID = 10000;
+	private static final int MENU_BUTTON_RANDOM_ID = 10000;
+	private static final int MENU_BUTTON_ABOUT_ME_ID = 10001;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -225,10 +226,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 			// Go to the random city
 			if (savedInstanceState == null) {
 				if (!viajeros.isEmpty()) {
-					int randomItemPosition = (int)(Math.random() * viajeros.size());
-					Viajero randomCity = viajeros.get(randomItemPosition);
-					Log.v(LOG_TAG, "Go to the random city: " + randomCity.getCity() + " of position " + randomItemPosition);
-					selectItem(randomCity);
+					selectItem(randomViajero());
 				}
 			}
 			
@@ -260,13 +258,24 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	// Random
+    	// About
+        menu.add(
+        		Menu.NONE,
+        		MENU_BUTTON_RANDOM_ID,
+        		Menu.NONE,
+        		"Aleatorio")
+        	.setIcon(R.drawable.ic_random)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+    	// About
         menu.add(
         		Menu.NONE,
         		MENU_BUTTON_ABOUT_ME_ID,
         		Menu.NONE,
         		"Acerca de")
+        	.setIcon(R.drawable.ic_about)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-
         return true;
     }
 
@@ -280,6 +289,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 					mDrawerLayout.openDrawer(mDrawerList);
 				}
 			}
+		} else if (item.getItemId() == MENU_BUTTON_RANDOM_ID) {
+			selectItem(randomViajero());
 		} else if (item.getItemId() == MENU_BUTTON_ABOUT_ME_ID) {
 			// Show alert message
 			showDialog(0);
@@ -422,6 +433,12 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
         }
     }
 
+    private Viajero randomViajero() {
+		int randomItemPosition = (int)(Math.random() * viajeros.size());
+		Viajero randomViajero = viajeros.get(randomItemPosition);
+		Log.v(LOG_TAG, "Go to the random city: " + randomViajero.getCity() + " of position " + randomItemPosition);
+		return randomViajero;
+    }
     private void printCities() {
     	HashMap<ChannelId, ArrayList<Viajero>> contentSorted = new HashMap<ChannelId, ArrayList<Viajero>>();
     	
