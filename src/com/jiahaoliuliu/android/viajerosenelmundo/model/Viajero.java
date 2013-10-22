@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Viajero {
 
+	private static final int DEFAULT_ZOOM_LEVEL = 10;
 	public enum ChannelId {
 		RTVE, CUATRO, TELEMADRID,
 
@@ -21,6 +22,7 @@ public class Viajero {
 	private String city;
 	private String country;
 	private LatLng position;
+	private int zoomLevel = DEFAULT_ZOOM_LEVEL;
 	private ChannelId channel;
 	private String url;
 
@@ -28,11 +30,12 @@ public class Viajero {
 		super();
 	}
 
-	public Viajero(String city, String country, LatLng position, ChannelId channel, String url) {
+	public Viajero(String city, String country, LatLng position, int zoomLevel, ChannelId channel, String url) {
 		super();
 		this.city = city;
 		this.country = country;
 		this.position = position;
+		this.zoomLevel = zoomLevel;
 		this.channel = channel;
 		this.url = url;
 	}
@@ -61,6 +64,14 @@ public class Viajero {
 		this.position = position;
 	}
 
+	public int getZoomLevel() {
+		return zoomLevel;
+	}
+
+	public void setZoomLevel(int zoomLevel) {
+		this.zoomLevel = zoomLevel;
+	}
+
 	public ChannelId getChannel() {
 		return channel;
 	}
@@ -87,6 +98,7 @@ public class Viajero {
 		result = prime * result
 				+ ((position == null) ? 0 : position.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		result = prime * result + zoomLevel;
 		return result;
 	}
 
@@ -121,12 +133,15 @@ public class Viajero {
 				return false;
 		} else if (!url.equals(other.url))
 			return false;
+		if (zoomLevel != other.zoomLevel)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Viajero [city=" + city + ", country=" + country + ", position="
-				+ position + ", channel=" + channel + ", url=" + url + "]";
+				+ position + ", zoomLevel=" + zoomLevel + ", channel="
+				+ channel + ", url=" + url + "]";
 	}
 }
