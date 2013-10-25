@@ -561,7 +561,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Amsterdam
 		viajero = new Viajero();
 		viajero.setCity("Ámsterdam");
-		viajero.setCountry("Países bajos");
+		viajero.setCountry("Países Bajos");
 		viajero.setPosition(new LatLng(52.370216, 4.895168));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/programa/espanoles-mundo--amsterdam/572762/");
@@ -597,7 +597,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Bangalore
 		viajero = new Viajero();
 		viajero.setCity("Bangalore");
-		viajero.setCountry("Índia");
+		viajero.setCountry("India");
 		viajero.setPosition(new LatLng(12.971599, 77.594563));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-bangalore");
@@ -779,7 +779,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Cartagena de Indias
 		viajero = new Viajero();
 		viajero.setCity("Cartagena de Indias");
-		viajero.setCountry("Columbia");
+		viajero.setCountry("Colombia");
 		viajero.setPosition(new LatLng(10.41373, -75.533577));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120105/cartagena-indias-mas-bellas-ciudades-colombia/487343.shtml");
@@ -987,7 +987,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Durban
 		viajero = new Viajero();
 		viajero.setCity("Durban");
-		viajero.setCountry("Suráfrica");
+		viajero.setCountry("Sudáfrica");
 		viajero.setPosition(new LatLng(-29.857876, 31.027581));
 		viajero.setZoomLevel(10);
 		viajero.setChannel(ChannelId.RTVE);
@@ -1472,7 +1472,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Las Vegas
 		viajero = new Viajero();
 		viajero.setCity("Las Vegas");
-		viajero.setCountry("Estados unidos");
+		viajero.setCountry("Estados Unidos");
 		viajero.setPosition(new LatLng(36.114646, -115.172816));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-vegas/926482/");
@@ -1509,7 +1509,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Liverpool
 		viajero = new Viajero();
 		viajero.setCity("Liverpool");
-		viajero.setCountry("Reino Unido");
+		viajero.setCountry("Reinos Unidos");
 		viajero.setPosition(new LatLng(53.408371, -2.991573));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120113/liverpool-ciudad-caracter/489224.shtml");
@@ -1518,7 +1518,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Londres
 		viajero = new Viajero();
 		viajero.setCity("Londres");
-		viajero.setCountry("Reino Unido");
+		viajero.setCountry("Reinos Unidos");
 		viajero.setPosition(new LatLng(51.511214, -0.119824));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20101111/espanoes-mundo-viaja-londres-ciudad-cosmopolita/369956.shtml");
@@ -1658,7 +1658,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Medellín
 		viajero = new Viajero();
 		viajero.setCity("Medellín");
-		viajero.setCountry("Columbia");
+		viajero.setCountry("Colombia");
 		viajero.setPosition(new LatLng(6.235925, -75.575137));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120713/medellin-tierra-paisas/546139.shtml");
@@ -2071,7 +2071,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Róterdam
 		viajero = new Viajero();
 		viajero.setCity("Róterdam");
-		viajero.setCountry("Paises Bajos");
+		viajero.setCountry("Países Bajos");
 		viajero.setPosition(new LatLng(51.924216, 4.481776));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20130225/espanoles-roterdam/610357.shtml");
@@ -2208,7 +2208,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Seúl
 		viajero = new Viajero();
 		viajero.setCity("Seúl");
-		viajero.setCountry("Corea del sur");
+		viajero.setCountry("Corea del Sur");
 		viajero.setPosition(new LatLng(37.566535, 126.977969));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo-seul/591012/");
@@ -2428,7 +2428,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Vancouver
 		viajero = new Viajero();
 		viajero.setCity("Vancouver");
-		viajero.setCountry("Canada");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(49.261226, -123.113927));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-vancouver");
