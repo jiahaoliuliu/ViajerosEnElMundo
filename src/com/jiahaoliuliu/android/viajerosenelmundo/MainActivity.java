@@ -1,10 +1,13 @@
 package com.jiahaoliuliu.android.viajerosenelmundo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -449,13 +452,25 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     }
     private void printCities() {
     	// The list of the cities
-    	HashMap<String, String> allCities = new HashMap<String, String>();
+    	ArrayList<String> countriesList = new ArrayList<String>();
+    	HashMap<String, ArrayList<String>> allCities = new HashMap<String, ArrayList<String>>();
     	// The list of the programs
     	HashMap<ChannelId, Integer> programs = new HashMap<ChannelId, Integer>();
 
     	for (Viajero viajero: viajeros) {
     		// Fill the cities
-    		allCities.put(viajero.getCity(), viajero.getCountry());
+    		ArrayList<String> cities = allCities.get(viajero.getCountry());
+    		if (cities == null) {
+    			cities = new ArrayList<String>();
+    			allCities.put(viajero.getCountry(), cities);
+    			countriesList.add(viajero.getCountry());
+    		}
+    		
+    		if (!cities.contains(viajero.getCity())) {
+    			cities.add(viajero.getCity());
+    		}
+    		
+    		// Fill the programs
     		Integer programCount = programs.get(viajero.getChannel());
     		if (programCount == null) {
     			programCount = 1;
@@ -464,7 +479,6 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     		programCount++;
     		programs.put(viajero.getChannel(), programCount);
     	}
-
     	// Print the programs
     	Log.v(LOG_TAG, "Programas:");
     	Set<ChannelId> channels = programs.keySet();
@@ -484,16 +498,33 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     		}
     	}
 
+    	// Sort the countries 
+    	Collections.sort(countriesList);
+    	
+    	// Sort the cities
+    	Set<String> countries = allCities.keySet();
+    	for (String country: countries) {
+    		ArrayList<String> cities = allCities.get(country);
+    		Collections.sort(cities);
+    	}
+
     	// Print the cities
     	Log.v(LOG_TAG, "Ciudades: ");
-    	Set<String> citiesKeys = allCities.keySet();
-    	for (String city: citiesKeys) {
-    		String country = allCities.get(city);
-			if (city.equalsIgnoreCase(country)) {
-				Log.v(LOG_TAG, "\t " + city);
-			} else {
-				Log.v(LOG_TAG, "\t " + city + ", " + country);
-			}
+    	for (String country: countriesList) {
+    		ArrayList<String> cities = allCities.get(country);
+    		if (cities.size() == 1 && cities.get(0).equals(country)) {
+    			Log.v(LOG_TAG, "\t" + country);
+    			continue;
+    		} else {
+        		Log.v(LOG_TAG, "\t" + country + ":");
+        		StringBuilder sb = new StringBuilder("\t\t");
+	    		for (String city : cities) {
+	    			sb.append(" " + city + ",");
+	    		}
+	    		// Remove the last character
+	    		sb.deleteCharAt(sb.length()-1);
+	    		Log.v(LOG_TAG, sb.toString());
+    		}
     	}
     }
 
