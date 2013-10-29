@@ -222,7 +222,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long id) {
-						selectItem(viajeros.get(position));
+						selectItem(position, true);
 					}
 				});
 			}
@@ -232,7 +232,12 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 			// Go to the random city
 			if (savedInstanceState == null) {
 				if (!viajeros.isEmpty()) {
-					selectItem(randomViajero());
+					int randomPosition = randomPositionGenerator();
+					if (randomPosition > 0) {
+						selectItem(randomPosition, false);
+					} else {
+						Log.e(LOG_TAG, "Error selecting random city. The position is " + randomPosition);
+					}
 				}
 			}
 			
@@ -296,7 +301,14 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 				}
 			}
 		} else if (item.getItemId() == MENU_BUTTON_RANDOM_ID) {
-			selectItem(randomViajero());
+			if (!viajeros.isEmpty()) {
+				int randomPosition = randomPositionGenerator();
+				if (randomPosition > 0 ) {
+					selectItem(randomPosition, false);
+				} else {
+					Log.e(LOG_TAG, "Error getting the random city. The position is " + randomPosition);
+				}
+			}
 		} else if (item.getItemId() == MENU_BUTTON_ABOUT_ME_ID) {
 			// Show alert message
 			showDialog(0);
@@ -309,12 +321,30 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(viajeros.get(position));
+			selectItem(position, true);
 		}
 	}
 	
-	private void selectItem(Viajero viajero) {
-		
+	/**
+	 * Select an item and show it on the map.
+	 * @param position The position of the list
+	 * @param fromList If the selection was done from the list or not.
+	 *                 If yes, then nothing.
+	 *                 If not, show it on the list
+	 */
+	private void selectItem(int position, boolean fromList) {
+
+		if (position < 0 || position > viajeros.size() -1 ) {
+			Log.e(LOG_TAG, "The position selected is not correct: " + position);
+			return;
+		}
+
+		if (!fromList) {
+			mDrawerList.setSelection(position);
+		}
+
+		Viajero viajero = viajeros.get(position);
+
 		int startZoomLevel = viajero.getZoomLevel() - ZOOM_ANIMATION_LEVEL;
 		if (startZoomLevel < MOST_ZOOM_LEVEL) {
 			startZoomLevel = MOST_ZOOM_LEVEL;
@@ -444,11 +474,12 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
         }
     }
 
-    private Viajero randomViajero() {
-		int randomItemPosition = (int)(Math.random() * viajeros.size());
-		Viajero randomViajero = viajeros.get(randomItemPosition);
-		Log.v(LOG_TAG, "Go to the random city: " + randomViajero.getCity() + " of position " + randomItemPosition);
-		return randomViajero;
+    private int randomPositionGenerator() {
+    	if (viajeros.size() > 0) {
+			return (int)(Math.random() * viajeros.size());
+    	} else {
+    		return -1;
+    	}
     }
     private void printCities() {
     	// The list of the cities
