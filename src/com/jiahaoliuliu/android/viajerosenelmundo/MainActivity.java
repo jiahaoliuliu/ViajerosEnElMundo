@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gowex.yelmo.FragmentManager;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
@@ -29,6 +31,7 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,24 +51,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.view.GravityCompat;
 
-public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener{
+public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener, ListViajerosProvider {
 
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
-	private static final int ZOOM_ANIMATION_LEVEL = 5;
-	private static final int MOST_ZOOM_LEVEL = 1;
 
 	private static final int MENU_BUTTON_RANDOM_ID = 10000;
 	private static final int MENU_BUTTON_ABOUT_ME_ID = 10001;
+	
+	private static final String WORLD_MAP_FRAGMENT_ID = "com.jiahaoliuliu.viajerosenelmundo.worldmapfragment";
+	
+	private FragmentManager fragmentManager;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private MenuListAdapter mMenuAdapter;
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	
-	private GoogleMap googleMap;
-	private Marker marker;
+
+	private WorldMapFragment worldMapFragment;
+
 	private List<Viajero> viajeros;
 
 	// Special screen text
@@ -84,8 +89,6 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     private boolean mShowing;
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
-    private HashMap<Marker, String> urlMaps = new HashMap<Marker, String>();
-    private HashMap<LatLng, Marker> markerByLocation = new HashMap<LatLng, Marker>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,150 +102,91 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
         mWindowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
 
-	    int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-	    if (isEnabled != ConnectionResult.SUCCESS) {
-	        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(isEnabled, this, 0);
-	        if (errorDialog != null) {
-        		errorDialog.show();
-	        }
-	    } else {
-			// Get the map
-			googleMap = ((SupportMapFragment)getSupportFragmentManager()
-					.findFragmentById(R.id.map))
-					.getMap();
-	
-			if (googleMap == null) {
-			    Toast.makeText(this, getResources().getString(R.string.error_google_maps_not_found), Toast.LENGTH_LONG).show();
-			    finish();
-			}
-			
-			addData();
-	
-			printCities();
+		addData();
 
-			// Draw all the points to the map
-			for (Viajero viajeroTmp: viajeros) {
-				MarkerOptions markerOptions = new MarkerOptions()
-					.position(viajeroTmp.getPosition())
-					.snippet(getResources().getString(R.string.marker_instruction));
-	
-				String city = viajeroTmp.getCity();
-				String country = viajeroTmp.getCountry();
-				if (city.equalsIgnoreCase(country)) {
-					markerOptions.title(country);
-				} else {
-					markerOptions.title(city + ", " + country);
+		printCities();
+
+		// Link the content
+		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+
+		mDrawerList = (ListView)findViewById(R.id.listview_drawer);
+
+		mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
+		
+		mDrawerList.setAdapter(mMenuAdapter);
+
+		// If there is not drawer because it is a tablet
+		if (mDrawerLayout != null){
+			// Set a custom shadow that overlays the main content when the drawer opens
+			mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+			// Enable ActionBar app icon to behave as action to toggle nav drawer
+			getSupportActionBar().setHomeButtonEnabled(true);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			
+			// ActionBarDrawerToggle ties together the proper interactions
+			// between the sliding drawer and the action bar app icon
+			mDrawerToggle = new ActionBarDrawerToggle(
+					this,
+					mDrawerLayout,
+					R.drawable.ic_drawer,
+					R.string.drawer_open,
+					R.string.drawer_close) {
+
+				public void onDrawerClosed(View view) {
+					super.onDrawerClosed(view);
+					mDialogText.setVisibility(View.INVISIBLE);
+					mShowing = false;
 				}
-	
-				Marker marker = googleMap.addMarker(markerOptions);
 				
-				// Add the data to the hash map
-				urlMaps.put(marker, viajeroTmp.getUrl());
-				markerByLocation.put(viajeroTmp.getPosition(), marker);
-				// Set the icon
-				switch (viajeroTmp.getChannel()) {
-				case RTVE:
-					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-					break;
-				case CUATRO:
-					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-					break;
-				case TELEMADRID:
-					// TODO: Set it white
-					marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-					break;
-				default:
-					Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
+				public void onDrawerOpened(View drawerView) {
+					super.onDrawerOpened(drawerView);
+					// Set the title on the action when drawer open
+					getSupportActionBar().setTitle(mDrawerTitle);
+					createBigIndex();
 				}
-			}
+			};
+			
+			mDrawerLayout.setDrawerListener(mDrawerToggle);
+			mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+		} else {
+			createBigIndex();
+			mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 	
-			googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-				
 				@Override
-				public void onInfoWindowClick(Marker marker) {
-					// Open a web page
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse(urlMaps.get(marker)));
-					startActivity(intent);
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int position, long id) {
+					selectItem(position, true);
 				}
 			});
-			
-			// Link the content
-			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-	
-			mDrawerList = (ListView)findViewById(R.id.listview_drawer);
-	
-			mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
-			
-			mDrawerList.setAdapter(mMenuAdapter);
-			
-	
-			// If there is not drawer because it is a tablet
-			if (mDrawerLayout != null){
-				// Set a custom shadow that overlays the main content when the drawer opens
-				mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-	
-				// Enable ActionBar app icon to behave as action to toggle nav drawer
-				getSupportActionBar().setHomeButtonEnabled(true);
-				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-				
-				// ActionBarDrawerToggle ties together the proper interactions
-				// between the sliding drawer and the action bar app icon
-				mDrawerToggle = new ActionBarDrawerToggle(
-						this,
-						mDrawerLayout,
-						R.drawable.ic_drawer,
-						R.string.drawer_open,
-						R.string.drawer_close) {
-	
-					public void onDrawerClosed(View view) {
-						super.onDrawerClosed(view);
-						mDialogText.setVisibility(View.INVISIBLE);
-						mShowing = false;
-					}
-					
-					public void onDrawerOpened(View drawerView) {
-						super.onDrawerOpened(drawerView);
-						// Set the title on the action when drawer open
-						getSupportActionBar().setTitle(mDrawerTitle);
-						createBigIndex();
-					}
-				};
-				
-				mDrawerLayout.setDrawerListener(mDrawerToggle);
-				mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-	
-			} else {
-				createBigIndex();
-				mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-	
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int position, long id) {
-						selectItem(position, true);
-					}
-				});
-			}
-	
-			mDrawerList.setOnScrollListener(this);
-	
-			// Go to the random city
-			if (savedInstanceState == null) {
-				if (!viajeros.isEmpty()) {
-					int randomPosition = randomPositionGenerator();
-					if (randomPosition > 0) {
-						selectItem(randomPosition, false);
-					} else {
-						Log.e(LOG_TAG, "Error selecting random city. The position is " + randomPosition);
-					}
+		}
+
+		mDrawerList.setOnScrollListener(this);
+
+		// Attach the worldmap
+		if (worldMapFragment == null) {
+			worldMapFragment = new WorldMapFragment();
+			FragmentTransaction ft = 
+		}
+		
+		// Go to the random city
+		if (savedInstanceState == null) {
+			if (!viajeros.isEmpty()) {
+				int randomPosition = randomPositionGenerator();
+				if (randomPosition > 0) {
+					selectItem(randomPosition, false);
+				} else {
+					Log.e(LOG_TAG, "Error selecting random city. The position is " + randomPosition);
 				}
 			}
-			
-	        LayoutInflater inflate = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	        
-	        mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
-	        mDialogText.setVisibility(View.INVISIBLE);
 		}
+
+        LayoutInflater inflate = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        
+        mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
+        mDialogText.setVisibility(View.INVISIBLE);
+
 	}
 
 	private void createBigIndex() {
@@ -329,8 +273,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	 *                 If yes, then nothing.
 	 *                 If not, show it on the list
 	 */
-	private void selectItem(int position, boolean fromList) {
-
+	private void selectItem (int position, boolean fromList) {
 		if (position < 0 || position > viajeros.size() -1 ) {
 			Log.e(LOG_TAG, "The position selected is not correct: " + position);
 			return;
@@ -340,33 +283,16 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 			mDrawerList.setSelection(position);
 		}
 
-		Viajero viajero = viajeros.get(position);
-
-		int startZoomLevel = viajero.getZoomLevel() - ZOOM_ANIMATION_LEVEL;
-		if (startZoomLevel < MOST_ZOOM_LEVEL) {
-			startZoomLevel = MOST_ZOOM_LEVEL;
-		}
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(viajero.getPosition(), startZoomLevel));
-	    // Zoom in, animating the camera.
-		Log.v(LOG_TAG, "Going to the zoom level " + viajero.getZoomLevel());
-		googleMap.animateCamera(CameraUpdateFactory.zoomTo(viajero.getZoomLevel()), 2000, null);
-
-		// Get the title followed by the position
-		setTitle(viajero.getCity());
-		
-		// Show the info windows
-		if (markerByLocation.containsKey(viajero.getPosition())) {
-			Marker marker = markerByLocation.get(viajero.getPosition());
-			marker.showInfoWindow();
-		}
-		
 		if (mDrawerLayout != null) {
 			// Close drawer
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
+		
+		// Get the title followed by the position
+		Viajero viajero = viajeros.get(position);
+		setTitle(viajero.getCity());
 	}
 
-	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -481,6 +407,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     
 	public void onErrorReceived(int errorCode, String errorMessage) {
 		Log.e(LOG_TAG, "Error received with code: " + errorCode + ", and message: " + errorMessage);
+	}
+
+	public List<Viajero> getListViajeros() {
+		return viajeros;
 	}
 
     private void printCities() {

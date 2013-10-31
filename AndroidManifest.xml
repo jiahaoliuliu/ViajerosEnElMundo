@@ -40,13 +40,13 @@
   </activity>
  
   <!-- Debug key -->
-  <!-- <meta-data
-      android:name="com.google.android.maps.v2.API_KEY"
-      android:value="AIzaSyBTiF9N4P02z0V3WGnPzC0SG7H49ojrxaA" /> -->
-  <!-- Production key -->
   <meta-data
       android:name="com.google.android.maps.v2.API_KEY"
-      android:value="AIzaSyBtZfJZnLBFcfxErU52kwxVY5lJhnNtNEc" />
+      android:value="AIzaSyBTiF9N4P02z0V3WGnPzC0SG7H49ojrxaA" />
+  <!-- Production key -->
+  <!-- <meta-data
+      android:name="com.google.android.maps.v2.API_KEY"
+      android:value="AIzaSyBtZfJZnLBFcfxErU52kwxVY5lJhnNtNEc" /> -->
  </application>
 
 </manifest>
