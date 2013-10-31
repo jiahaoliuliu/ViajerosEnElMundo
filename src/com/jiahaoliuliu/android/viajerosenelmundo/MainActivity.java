@@ -1,20 +1,16 @@
 package com.jiahaoliuliu.android.viajerosenelmundo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -23,6 +19,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
 
@@ -51,7 +48,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.view.GravityCompat;
 
-public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener{
+public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener{
 
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -481,6 +478,11 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     		return -1;
     	}
     }
+    
+	public void onErrorReceived(int errorCode, String errorMessage) {
+		Log.e(LOG_TAG, "Error received with code: " + errorCode + ", and message: " + errorMessage);
+	}
+
     private void printCities() {
     	// The list of the cities
     	ArrayList<String> countriesList = new ArrayList<String>();
