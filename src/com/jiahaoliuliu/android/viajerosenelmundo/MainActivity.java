@@ -397,7 +397,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     protected Dialog onCreateDialog(int id) {
 		return new AlertDialog.Builder(this)
         .setTitle("Acerce de")
-        .setMessage("Esta aplicaci√≥n pretende reunir los programas de la televisi√≥n sobre viajes y ubicarlas en la mapa para facilitar la navegaci√≥n.\n\n" +
+        .setMessage("Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n" +
         		"Contribuye su mejora poniendolo en un comentario y vontandola.\n\n" +
         		"Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n")
         .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
@@ -442,8 +442,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
                 mDialogText.setVisibility(View.VISIBLE);
             }
             
-            // Special case for "√Å"
-            if (firstLetter == '√Å') {
+            // Special case for "Á"
+            if (firstLetter == 'Á') {
             	firstLetter = 'A';
             }
 
@@ -454,9 +454,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
         }
     }
 
-    // Set the special case for "A" and "√Å"
+    // Set the special case for "A" and "Á"
     private boolean equalLetters(char firstLetter, char prevLetter) {
-        if (firstLetter == 'A' && prevLetter == '√Å') {
+        if (firstLetter == 'A' && prevLetter == 'Á') {
         	return true;
         } else {
         	return firstLetter == prevLetter;
@@ -580,9 +580,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--alaska/581364/");
 		viajeros.add(viajero);
 
-		// Andam√°n
+		// Andamán
 		viajero = new Viajero();
-		viajero.setCity("Andam√°n");
+		viajero.setCity("Andamán");
 		viajero.setCountry("Tailandia");
 		viajero.setPosition(new LatLng(11.287888, 95.729982));
 		viajero.setChannel(ChannelId.CUATRO);
@@ -591,17 +591,17 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 		// Amsterdam
 		viajero = new Viajero();
-		viajero.setCity("√Åmsterdam");
-		viajero.setCountry("Pa√≠ses Bajos");
+		viajero.setCity("Ámsterdam");
+		viajero.setCountry("Países Bajos");
 		viajero.setPosition(new LatLng(52.370216, 4.895168));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/programa/espanoles-mundo--amsterdam/572762/");
 		viajeros.add(viajero);
 		
-		// Ant√°rtida
+		// Antártida
 		viajero = new Viajero();
-		viajero.setCity("Ant√°rtida");
-		viajero.setCountry("Ant√°rtida");
+		viajero.setCity("Antártida");
+		viajero.setCountry("Antártida");
 		viajero.setPosition(new LatLng(-82.862752, -135));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-antartida");
@@ -670,27 +670,27 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20130506/ciudad-marcada-historia/656946.shtml");
 		viajeros.add(viajero);
 
-		// B√©lgica
+		// Bélgica
 		viajero = new Viajero();
-		viajero.setCity("B√©lgica");
-		viajero.setCountry("B√©lgica");
+		viajero.setCity("Bélgica");
+		viajero.setCountry("Bélgica");
 		viajero.setPosition(new LatLng(50.503887, 4.469936));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20101118/espanoles-mundo-viaja-hasta-belgica-cuna-del-art-nouveau/372481.shtml");
 		viajeros.add(viajero);
 
-		// Berl√≠n
+		// Berlínn
 		viajero = new Viajero();
-		viajero.setCity("Berl√≠n");
+		viajero.setCity("Berlín");
 		viajero.setCountry("Alemania");
 		viajero.setPosition(new LatLng(52.519171, 13.406091));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/programa/espanoles-mundo-berlin/889792/");
 		viajeros.add(viajero);
 
-		// Bogot√°
+		// Bogotá
 		viajero = new Viajero();
-		viajero.setCity("Bogot√°");
+		viajero.setCity("Bogotá");
 		viajero.setCountry("Colombia");
 		viajero.setPosition(new LatLng(4.598056, -74.075833));
 		viajero.setChannel(ChannelId.RTVE);
@@ -733,9 +733,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.cuatro.com/callejeros-viajeros/Brasil-aire-puro-carta_2_1623330205.html");
 		viajeros.add(viajero);
 
-		// Breta√±a
+		// Bretaña
 		viajero = new Viajero();
-		viajero.setCity("Breta√±a");
+		viajero.setCity("Bretaña");
 		viajero.setCountry("Francia");
 		viajero.setPosition(new LatLng(48.202047, -2.932644));
 		viajero.setChannel(ChannelId.RTVE);
@@ -745,7 +745,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Budapest
 		viajero = new Viajero();
 		viajero.setCity("Budapest");
-		viajero.setCountry("Hungr√≠a");
+		viajero.setCountry("Hungría");
 		viajero.setPosition(new LatLng(47.497912, 19.040235));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20101129/377030.shtml");
@@ -763,7 +763,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Calgary
 		viajero = new Viajero();
 		viajero.setCity("Calgary");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(51.045325, -114.058101));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-calgary/1559764/");
@@ -778,10 +778,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20111021/camboya-secreto-del-sudeste-asiatico/469823.shtml");
 		viajeros.add(viajero);
 
-		// Camer√∫n
+		// Camerún
 		viajero = new Viajero();
-		viajero.setCity("Camer√∫n");
-		viajero.setCountry("Camer√∫n");
+		viajero.setCity("Camerún");
+		viajero.setCountry("Camerún");
 		viajero.setPosition(new LatLng(4.923121, 12.310777));
 		viajero.setZoomLevel(5);
 		viajero.setChannel(ChannelId.RTVE);
@@ -798,10 +798,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--cabo-verde/476672/");
 		viajeros.add(viajero);
 
-		// Caribe Holand√©s
+		// Caribe Holandés
 		viajero = new Viajero();
-		viajero.setCity("Caribe Holand√©s");
-		viajero.setCountry("Caribe Holand√©s");
+		viajero.setCity("Caribe Holandés");
+		viajero.setCountry("Caribe Holandés");
 		viajero.setPosition(new LatLng(12.178361, -68.238534));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-caribe-holandes/1578852/");
@@ -882,7 +882,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Ciudad del cabo
 		viajero = new Viajero();
 		viajero.setCity("Ciudad del cabo");
-		viajero.setCountry("Sud√°frica");
+		viajero.setCountry("Sudáfrica");
 		viajero.setPosition(new LatLng(-33.924868, 18.424055));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setZoomLevel(9);
@@ -988,27 +988,27 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--dinamarca/530386/");
 		viajeros.add(viajero);
 
-		// Dub√°i
+		// Dubái
 		viajero = new Viajero();
-		viajero.setCity("Dub√°i");
-		viajero.setCountry("Emiratos √Årabes Unidos");
+		viajero.setCity("Dubái");
+		viajero.setCountry("Emiratos Árabes Unidos");
 		viajero.setPosition(new LatLng(25.271139, 55.307485));
 		viajero.setChannel(ChannelId.CUATRO);
 		viajero.setUrl("http://www.cuatro.com/callejeros-viajeros/ultimo-programa/Callejeros_Viajeros-Dubai-lujo-caballos-arabes-Burj_Khalifa_2_1583430176.html");
 		viajeros.add(viajero);
 
-		// Dub√°i
+		// Dubái
 		viajero = new Viajero();
-		viajero.setCity("Dub√°i");
-		viajero.setCountry("Emiratos √Årabes Unidos");
+		viajero.setCity("Dubái");
+		viajero.setCountry("Emiratos Árabes Unidos");
 		viajero.setPosition(new LatLng(25.371139, 55.407485));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20110519/dubai-capital-mundial-del-lujo-exageracion-espanoles-mundo/433533.shtml");
 		viajeros.add(viajero);
 
-		// Dubl√≠n
+		// Dublín
 		viajero = new Viajero();
-		viajero.setCity("Dubl√≠n");
+		viajero.setCity("Dublín");
 		viajero.setCountry("Irlanda");
 		viajero.setPosition(new LatLng(53.349805, -6.26031));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1018,7 +1018,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Durban
 		viajero = new Viajero();
 		viajero.setCity("Durban");
-		viajero.setCountry("Sud√°frica");
+		viajero.setCountry("Sudáfrica");
 		viajero.setPosition(new LatLng(-29.857876, 31.027581));
 		viajero.setZoomLevel(10);
 		viajero.setChannel(ChannelId.RTVE);
@@ -1056,7 +1056,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Esmirna
 		viajero = new Viajero();
 		viajero.setCity("Esmirna");
-		viajero.setCountry("Turqu√≠a");
+		viajero.setCountry("Turquía");
 		viajero.setPosition(new LatLng(38.41885, 27.12872));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/espanoles-en-el-mundo/esmirna/");
@@ -1065,7 +1065,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Estambul
 		viajero = new Viajero();
 		viajero.setCity("Estambul");
-		viajero.setCountry("Turqu√≠a");
+		viajero.setCountry("Turquía");
 		viajero.setPosition(new LatLng(41.00527,28.97696));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo-estambul/423017/");
@@ -1080,10 +1080,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--estocolmo/609798/");
 		viajeros.add(viajero);
 
-		// Etiop√≠a
+		// Etiopía
 		viajero = new Viajero();
-		viajero.setCity("Etiop√≠a");
-		viajero.setCountry("Etiop√≠a");
+		viajero.setCity("Etiopía");
+		viajero.setCountry("Etiopía");
 		viajero.setPosition(new LatLng(8.6182, 39.680667));
 		viajero.setZoomLevel(5);
 		viajero.setChannel(ChannelId.RTVE);
@@ -1129,7 +1129,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Flandes
 		viajero = new Viajero();
 		viajero.setCity("Flandes");
-		viajero.setCountry("B√©lgica");
+		viajero.setCountry("Bélgica");
 		viajero.setPosition(new LatLng(51.095024, 4.447781));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-flandes");
@@ -1162,10 +1162,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20121205/espanoles-visita-florida-playas-sol-permanentes/582314.shtml");
 		viajeros.add(viajero);
 
-		// Gab√≥n
+		// Gabón
 		viajero = new Viajero();
-		viajero.setCity("Gab√≥n");
-		viajero.setCountry("Gab√≥n");
+		viajero.setCity("Gabón");
+		viajero.setCountry("Gabón");
 		viajero.setPosition(new LatLng(-0.803689, 11.609444));
 		viajero.setZoomLevel(6);
 		viajero.setChannel(ChannelId.RTVE);
@@ -1283,27 +1283,27 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo-guinea-ecuatorial/503034/");
 		viajeros.add(viajero);
 
-		// Hait√≠
+		// Haití
 		viajero = new Viajero();
-		viajero.setCity("Hait√≠");
-		viajero.setCountry("Hait√≠");
+		viajero.setCity("Haití");
+		viajero.setCountry("Haití");
 		viajero.setPosition(new LatLng(18.971187, -72.285215));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--haiti/450209/");
 		viajeros.add(viajero);
 
-		// Han√≥i
+		// Hanói
 		viajero = new Viajero();
-		viajero.setCity("Han√≥i");
+		viajero.setCity("Hanói");
 		viajero.setCountry("Vietnam");
 		viajero.setPosition(new LatLng(21.033333, 105.85));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20130311/espanoles-hanoi/615584.shtml");
 		viajeros.add(viajero);
 
-		// Haw√°i
+		// Hawái
 		viajero = new Viajero();
-		viajero.setCity("Haw√°i");
+		viajero.setCity("Hawái");
 		viajero.setCountry("Estados Unidos");
 		viajero.setPosition(new LatLng(19.896766, -155.582782));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1349,7 +1349,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Iquitos
 		viajero = new Viajero();
 		viajero.setCity("Iquitos");
-		viajero.setCountry("Per√∫");
+		viajero.setCountry("Perú");
 		viajero.setPosition(new LatLng(-3.75, -73.25));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20130606/biodiversidad-leyendas/681442.shtml");
@@ -1373,9 +1373,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-islandia");
 		viajeros.add(viajero);
 
-		// Islas Caim√°n
+		// Islas Caimán
 		viajero = new Viajero();
-		viajero.setCity("Islas Caim√°n");
+		viajero.setCity("Islas Caimán");
 		viajero.setCountry("Reinos Unidos");
 		viajero.setPosition(new LatLng(19.3133, -81.2546));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1394,7 +1394,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Jalisco
 		viajero = new Viajero();
 		viajero.setCity("Jalisco");
-		viajero.setCountry("M√©xico");
+		viajero.setCountry("México");
 		viajero.setPosition(new LatLng(20.15402, -103.914399));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo-jalisco/678126/");
@@ -1427,9 +1427,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-java-avance/1522150/");
 		viajeros.add(viajero);
 
-		// Jerusal√©n
+		// Jerusalén
 		viajero = new Viajero();
-		viajero.setCity("Jerusal√©n");
+		viajero.setCity("Jerusalén");
 		viajero.setCountry("Israel");
 		viajero.setPosition(new LatLng(31.768319, 35.21371));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1454,10 +1454,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--jordania/626040/");
 		viajeros.add(viajero);
 
-		// Kazajist√°n
+		// Kazajistán
 		viajero = new Viajero();
-		viajero.setCity("Kazajist√°n");
-		viajero.setCountry("Kazajist√°n");
+		viajero.setCity("Kazajistán");
+		viajero.setCountry("Kazajistán");
 		viajero.setPosition(new LatLng(48.019573, 66.923684));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20121207/kazajistan-enorme-pais-corazon-asia-central/583320.shtml");
@@ -1476,7 +1476,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Kyoto
 		viajero = new Viajero();
 		viajero.setCity("Kyoto");
-		viajero.setCountry("Jap√≥n");
+		viajero.setCountry("Japón");
 		viajero.setPosition(new LatLng(35.011636, 135.768029));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--kyoto/497809/");
@@ -1555,18 +1555,18 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20101111/espanoes-mundo-viaja-londres-ciudad-cosmopolita/369956.shtml");
 		viajeros.add(viajero);
 
-		// Los √Ångeles (Florida)
+		// Los Ángeles (Florida)
 		viajero = new Viajero();
-		viajero.setCity("Los √Ångeles");
+		viajero.setCity("Los Ángeles");
 		viajero.setCountry("Estados Unidos");
 		viajero.setPosition(new LatLng(34.052234, -118.243685));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-los-angeles");
 		viajeros.add(viajero);
 
-		// Los √Ångeles (Florida)
+		// Los Ángeles (Florida)
 		viajero = new Viajero();
-		viajero.setCity("Los √Ångeles");
+		viajero.setCity("Los Ángeles");
 		viajero.setCountry("Estados Unidos");
 		viajero.setPosition(new LatLng(34.152234, -118.343685));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1686,9 +1686,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo-sahara/443513/");
 		viajeros.add(viajero);
 
-		// Medell√≠n
+		// Medellín
 		viajero = new Viajero();
-		viajero.setCity("Medell√≠n");
+		viajero.setCity("Medellín");
 		viajero.setCountry("Colombia");
 		viajero.setPosition(new LatLng(6.235925, -75.575137));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1714,19 +1714,19 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20130121/turismo-enologico-argentina/604120.shtml");
 		viajeros.add(viajero);
 
-		// M√©xico
+		// México
 		viajero = new Viajero();
-		viajero.setCity("M√©xico");
-		viajero.setCountry("M√©xico");
+		viajero.setCity("México");
+		viajero.setCountry("México");
 		viajero.setPosition(new LatLng(23.634501, -102.552784));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-caribe-mexicano");
 		viajeros.add(viajero);
 
-		// M√©xico
+		// México
 		viajero = new Viajero();
-		viajero.setCity("M√©xico");
-		viajero.setCountry("M√©xico");
+		viajero.setCity("México");
+		viajero.setCountry("México");
 		viajero.setPosition(new LatLng(23.734501, -102.652784));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20121122/mexico-lindo-querido-tambien-para-espanoles/576441.shtml");
@@ -1741,9 +1741,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-miami/1065853/");
 		viajeros.add(viajero);
 
-		// Mil√°n
+		// Milán
 		viajero = new Viajero();
-		viajero.setCity("Mil√°n");
+		viajero.setCity("Milán");
 		viajero.setCountry("Italia");
 		viajero.setPosition(new LatLng(45.458626, 9.181873));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1771,15 +1771,15 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Montreal
 		viajero = new Viajero();
 		viajero.setCity("Montreal");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(45.50867, -73.553992));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo/595581/");
 		viajeros.add(viajero);
 
-		// Mosc√∫
+		// Moscú
 		viajero = new Viajero();
-		viajero.setCity("Mosc√∫");
+		viajero.setCity("Moscú");
 		viajero.setCountry("Rusia");
 		viajero.setPosition(new LatLng(55.755826, 37.6173));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1796,9 +1796,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20120427/mozambique-tierra-buena-gente/519227.shtml");
 		viajeros.add(viajero);
 
-		// M√∫nich
+		// Múnich
 		viajero = new Viajero();
-		viajero.setCity("M√∫nich");
+		viajero.setCity("Múnich");
 		viajero.setCountry("Alemania");
 		viajero.setPosition(new LatLng(48.13672, 11.576754));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1815,9 +1815,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--namibia/636123/");
 		viajeros.add(viajero);
 
-		// N√°poles
+		// Nápoles
 		viajero = new Viajero();
-		viajero.setCity("N√°poles");
+		viajero.setCity("Nápoles");
 		viajero.setCountry("Italia");
 		viajero.setPosition(new LatLng(40.851775, 14.268124));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1919,16 +1919,16 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Ottawa
 		viajero = new Viajero();
 		viajero.setCity("Ottawa");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(45.42153, -75.697193));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20130204/apariencia-fria-calida-acogida/606497.shtml");
 		viajeros.add(viajero);
 
-		// Panam√°
+		// Panamá
 		viajero = new Viajero();
-		viajero.setCity("Panam√°");
-		viajero.setCountry("Panam√°");
+		viajero.setCity("Panamá");
+		viajero.setCountry("Panamá");
 		viajero.setPosition(new LatLng(8.994269, -79.518792));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--panama/522013/");
@@ -1943,9 +1943,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20120210/uno-paises-mas-desconocidos/497238.shtml");
 		viajeros.add(viajero);
 
-		// Par√≠s
+		// París
 		viajero = new Viajero();
-		viajero.setCity("Par√≠s");
+		viajero.setCity("París");
 		viajero.setCountry("Francia");
 		viajero.setPosition(new LatLng(48.856614, 2.352222));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1961,27 +1961,27 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--patagonia/645394/");
 		viajeros.add(viajero);
 
-		// Pek√≠n
+		// Pekín
 		viajero = new Viajero();
-		viajero.setCity("Pek√≠n");
+		viajero.setCity("Pekín");
 		viajero.setCountry("China");
 		viajero.setPosition(new LatLng(39.90403, 116.407526));
 		viajero.setChannel(ChannelId.CUATRO);
 		viajero.setUrl("http://www.cuatro.com/callejeros-viajeros/ultimo-programa/Pekin-Callejeros_Viajeros-Muralla_China-Contaminacion_2_1661655076.html");
 		viajeros.add(viajero);
 
-		// Pek√≠n
+		// Pekín
 		viajero = new Viajero();
-		viajero.setCity("Pek√≠n");
+		viajero.setCity("Pekín");
 		viajero.setCountry("China");
 		viajero.setPosition(new LatLng(39.80403, 116.307526));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-pekin");
 		viajeros.add(viajero);
 
-		// Pek√≠n
+		// Pekín
 		viajero = new Viajero();
-		viajero.setCity("Pek√≠n");
+		viajero.setCity("Pekín");
 		viajero.setCountry("China");
 		viajero.setPosition(new LatLng(40.00403, 116.507526));
 		viajero.setChannel(ChannelId.RTVE);
@@ -1997,19 +1997,19 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/television/20130416/vamos-antipodas/641101.shtml");
 		viajeros.add(viajero);
 
-		// Per√∫
+		// Perú
 		viajero = new Viajero();
-		viajero.setCity("Per√∫");
-		viajero.setCountry("Per√∫");
+		viajero.setCity("Perú");
+		viajero.setCountry("Perú");
 		viajero.setPosition(new LatLng(-9.189967, -75.015152));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-peru");
 		viajeros.add(viajero);
 
-		// Per√∫
+		// Perú
 		viajero = new Viajero();
-		viajero.setCity("Per√∫");
-		viajero.setCountry("Per√∫");
+		viajero.setCity("Perú");
+		viajero.setCountry("Perú");
 		viajero.setPosition(new LatLng(-9.289967, -75.115152));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--peru/507919/");
@@ -2028,7 +2028,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Praga
 		viajero = new Viajero();
 		viajero.setCity("Praga");
-		viajero.setCountry("Rep√∫blica Checa");
+		viajero.setCountry("República Checa");
 		viajero.setPosition(new LatLng(50.075538, 14.4378));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20100908/espanoles-mundo-viaja-madre-las-capitales-europa-praga/352809.shtml");
@@ -2055,26 +2055,26 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Quebec
 		viajero = new Viajero();
 		viajero.setCity("Quebec");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(52.939916, -73.549136));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120302/quebec-ciudad-mas-antigua-norte-mexico/513591.shtml");
 		viajeros.add(viajero);
 
 		/* TODO:http://www.rtve.es/television/espanoles-en-el-mundo/republica-dominicana/
-		// Rep√∫blica Dominicana
+		// República Dominicana
 		viajero = new Viajero();
-		viajero.setCity("Rep√∫blica Dominicana");
-		viajero.setCountry("Rep√∫blica Dominicana");
+		viajero.setCity("República Dominicana");
+		viajero.setCountry("República Dominicana");
 		viajero.setPosition(new LatLng(18.735693, -70.162651));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120302/quebec-ciudad-mas-antigua-norte-mexico/513591.shtml");
 		viajeros.add(viajero);
 		*/
 
-		// R√≠o de Janeiro
+		// Río de Janeiro
 		viajero = new Viajero();
-		viajero.setCity("R√≠o de Janeiro");
+		viajero.setCity("Río de Janeiro");
 		viajero.setCountry("Brasil");
 		viajero.setPosition(new LatLng(-22.903539, -43.209587));
 		viajero.setChannel(ChannelId.RTVE);
@@ -2099,18 +2099,18 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-roma");
 		viajeros.add(viajero);
 
-		// R√≥terdam
+		// Róterdam
 		viajero = new Viajero();
-		viajero.setCity("R√≥terdam");
-		viajero.setCountry("Pa√≠ses Bajos");
+		viajero.setCity("Róterdam");
+		viajero.setCountry("Países Bajos");
 		viajero.setPosition(new LatLng(51.924216, 4.481776));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20130225/espanoles-roterdam/610357.shtml");
 		viajeros.add(viajero);
 
-		// Salvador de Bah√≠a
+		// Salvador de Bahía
 		viajero = new Viajero();
-		viajero.setCity("Salvador de Bah√≠a");
+		viajero.setCity("Salvador de Bahía");
 		viajero.setCountry("Brasil");
 		viajero.setPosition(new LatLng(-12.970382, -38.512382));
 		viajero.setChannel(ChannelId.RTVE);
@@ -2171,10 +2171,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-san-petesburgo");
 		viajeros.add(viajero);
 
-		// San Tom√© y Pr√≠ncipe
+		// San Tomé y Príncipe
 		viajero = new Viajero();
-		viajero.setCity("San Tom√© y Pr√≠ncipe");
-		viajero.setCountry("San Tom√© y Pr√≠ncipe");
+		viajero.setCity("San Tomé y Príncipe");
+		viajero.setCountry("San Tomé y Príncipe");
 		viajero.setPosition(new LatLng(0.18636, 6.613081));
 		viajero.setZoomLevel(10);
 		viajero.setChannel(ChannelId.RTVE);
@@ -2236,9 +2236,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--serbia/512643/");
 		viajeros.add(viajero);
 
-		// Se√∫l
+		// Seúl
 		viajero = new Viajero();
-		viajero.setCity("Se√∫l");
+		viajero.setCity("Seúl");
 		viajero.setCountry("Corea del Sur");
 		viajero.setPosition(new LatLng(37.566535, 126.977969));
 		viajero.setChannel(ChannelId.RTVE);
@@ -2328,19 +2328,19 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--tanzania/534692/");
 		viajeros.add(viajero);
 
-		// T√°nger
+		// Tánger
 		viajero = new Viajero();
-		viajero.setCity("T√°nger");
+		viajero.setCity("Tánger");
 		viajero.setCountry("Marruecos");
 		viajero.setPosition(new LatLng(35.766667, -5.8));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-tanger");
 		viajeros.add(viajero);
 
-		// Taiw√°n
+		// Taiwán
 		viajero = new Viajero();
-		viajero.setCity("Taiw√°n");
-		viajero.setCountry("Taiw√°n");
+		viajero.setCity("Taiwán");
+		viajero.setCountry("Taiwán");
 		viajero.setPosition(new LatLng(23.69781, 120.960515));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-taiwan/1536144/");
@@ -2358,7 +2358,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Tokio
 		viajero = new Viajero();
 		viajero.setCity("Tokio");
-		viajero.setCountry("Jap√≥n");
+		viajero.setCountry("Japón");
 		viajero.setPosition(new LatLng(35.692437, 139.703522));
 		viajero.setChannel(ChannelId.CUATRO);
 		viajero.setUrl("http://www.cuatro.com/callejeros-viajeros/programas/asia/Callejeros-Viajeros-T05xP10-Tokio-poblada_2_1586580079.html");
@@ -2367,7 +2367,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Tokio
 		viajero = new Viajero();
 		viajero.setCity("Tokio");
-		viajero.setCountry("Jap√≥n");
+		viajero.setCountry("Japón");
 		viajero.setPosition(new LatLng(35.702437, 139.803522));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20100527/espanoles-mundo-viaja-a-tokio-capital-del-sol-naciente/333147.shtml");
@@ -2376,7 +2376,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Toronto
 		viajero = new Viajero();
 		viajero.setCity("Toronto");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(43.653226, -79.383184));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/television/espanoles-mundo--toronto/490709/");
@@ -2400,19 +2400,19 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-trinidad-tobago/738247/");
 		viajeros.add(viajero);
 
-		// T√∫nez
+		// Túnez
 		viajero = new Viajero();
-		viajero.setCity("T√∫nez");
-		viajero.setCountry("T√∫nez");
+		viajero.setCity("Túnez");
+		viajero.setCountry("Túnez");
 		viajero.setPosition(new LatLng(33.886917, 9.537499));
 		viajero.setZoomLevel(6);
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120622/tunez-joya-africa/539082.shtml");
 		viajeros.add(viajero);
 
-		// Tur√≠n
+		// Turín
 		viajero = new Viajero();
-		viajero.setCity("Tur√≠n");
+		viajero.setCity("Turín");
 		viajero.setCountry("Italia");
 		viajero.setPosition(new LatLng(45.063299, 7.669289));
 		viajero.setChannel(ChannelId.RTVE);
@@ -2459,7 +2459,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Vancouver
 		viajero = new Viajero();
 		viajero.setCity("Vancouver");
-		viajero.setCountry("Canad√°");
+		viajero.setCountry("Canadá");
 		viajero.setPosition(new LatLng(49.261226, -123.113927));
 		viajero.setChannel(ChannelId.TELEMADRID);
 		viajero.setUrl("http://www.telemadrid.es/programas/madrilenos-por-el-mundo/madrilenos-por-el-mundo-vancouver");
@@ -2530,10 +2530,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		viajeros.add(viajero);
 		*/
 
-		// Yucat√°n
+		// Yucatán
 		viajero = new Viajero();
-		viajero.setCity("Yucat√°n");
-		viajero.setCountry("M√©xico");
+		viajero.setCity("Yucatán");
+		viajero.setCountry("México");
 		viajero.setPosition(new LatLng(20.709879, -89.094338));
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/alacarta/videos/espanoles-en-el-mundo/espanoles-mundo-yucatan/1140689/");
