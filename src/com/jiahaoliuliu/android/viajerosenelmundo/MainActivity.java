@@ -11,6 +11,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.model.LatLng;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
@@ -39,7 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.view.GravityCompat;
 
-public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener, ListViajerosProvider {
+public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener, ListViajerosProvider, OnUrlReceivedListener{
 
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -403,6 +404,10 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 	public List<Viajero> getListViajeros() {
 		return viajeros;
+	}
+
+	public void onUrlReceived(String url) {
+		Log.v(LOG_TAG, "New url received: " + url);
 	}
 
     private void printCities() {

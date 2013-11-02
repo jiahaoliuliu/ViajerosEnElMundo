@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.jiahaoliuliu.android.viajerosenelmundo.callback.Callback;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 
 public class WorldMapFragment extends Fragment {
@@ -42,6 +43,7 @@ public class WorldMapFragment extends Fragment {
 	private Context context;
 	private Activity activity;
 	private ListViajerosProvider listViajerosProvider;
+	private OnUrlReceivedListener onUrlReceivedListener;
 	private FragmentManager supportFragmentManager;
 
 	private GoogleMap googleMap;
@@ -64,7 +66,15 @@ public class WorldMapFragment extends Fragment {
 				listDataCallback.done();
 			}
 		} catch (ClassCastException classCastException) {
-			throw new ClassCastException(activity.toString() + " must implement ListViajerosProvider");
+			Log.e(LOG_TAG, "The attached class has not implemented ListViajerosProvider. ", classCastException);
+			throw new ClassCastException(activity.toString() + " must implement ListViajerosProvider.");
+		}
+		
+		try {
+			onUrlReceivedListener = (OnUrlReceivedListener) activity;
+		} catch (ClassCastException classCastException) {
+			Log.e(LOG_TAG, "The attached class has not implemented OnUrlReceivedListener. ", classCastException);
+			throw new ClassCastException(activity.toString() + " must implement OnUrlReceivedListener.");
 		}
 
 		this.context = activity;
@@ -134,10 +144,7 @@ public class WorldMapFragment extends Fragment {
 					
 					@Override
 					public void onInfoWindowClick(Marker marker) {
-						// Open a web page
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setData(Uri.parse(urlMaps.get(marker)));
-						startActivity(intent);
+						onUrlReceivedListener.onUrlReceived(urlMaps.get(marker));
 					}
 				});
 
@@ -205,7 +212,6 @@ public class WorldMapFragment extends Fragment {
 		Log.v(LOG_TAG, "Going to the zoom level " + viajero.getZoomLevel());
 		googleMap.animateCamera(CameraUpdateFactory.zoomTo(viajero.getZoomLevel()), 2000, null);
 
-		
 		// Show the info windows
 		if (markerByLocation.containsKey(viajero.getPosition())) {
 			Marker marker = markerByLocation.get(viajero.getPosition());
