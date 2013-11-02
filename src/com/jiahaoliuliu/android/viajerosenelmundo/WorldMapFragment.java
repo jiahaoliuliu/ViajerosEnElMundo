@@ -77,7 +77,7 @@ public class WorldMapFragment extends Fragment {
 		}
 
 		this.context = activity;
-		supportFragmentManager = this.getActivity().getSupportFragmentManager();
+		this.activity = activity;
 	}
 	
 	@Override
@@ -91,19 +91,68 @@ public class WorldMapFragment extends Fragment {
 
 	    try {
 	        view = inflater.inflate(R.layout.world_map_fragment, container, false);
-		    int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+		    int isEnabled = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		    if (isEnabled != ConnectionResult.SUCCESS) {
 		        Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(isEnabled, activity, 0);
 		        if (errorDialog != null) {
 	        		errorDialog.show();
 		        }
 		    } else {
+				supportFragmentManager = this.getActivity().getSupportFragmentManager();
 				// Get the map
 				googleMap = ((SupportMapFragment)supportFragmentManager
 						.findFragmentById(R.id.map))
 						.getMap();
 				if (googleMap == null) {
 				    // TODO: Send the error to the activity
+					Log.e(LOG_TAG, "Error getting the google Map. It seems null");
+				} else {
+					// Draw all the points to the map
+					for (Viajero viajeroTmp: viajeros) {
+						MarkerOptions markerOptions = new MarkerOptions()
+							.position(viajeroTmp.getPosition())
+							.snippet(getResources().getString(R.string.marker_instruction));
+
+						String city = viajeroTmp.getCity();
+						String country = viajeroTmp.getCountry();
+						if (city.equalsIgnoreCase(country)) {
+							markerOptions.title(country);
+						} else {
+							markerOptions.title(city + ", " + country);
+						}
+
+						Marker marker = googleMap.addMarker(markerOptions);
+						
+						// Add the data to the hash map
+						urlMaps.put(marker, viajeroTmp.getUrl());
+						markerByLocation.put(viajeroTmp.getPosition(), marker);
+						// Set the icon
+						switch (viajeroTmp.getChannel()) {
+						case RTVE:
+							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+							break;
+						case CUATRO:
+							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+							break;
+						case TELEMADRID:
+							// TODO: Set it white
+							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+							break;
+						default:
+							Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
+						}
+					}
+
+					googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+						
+						@Override
+						public void onInfoWindowClick(Marker marker) {
+							// Open a web page
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse(urlMaps.get(marker)));
+							startActivity(intent);
+						}
+					});
 				}
 		    }
 	    } catch (InflateException e) {
@@ -112,58 +161,8 @@ public class WorldMapFragment extends Fragment {
 	    }
 	    return view;
 	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// Draw all the points to the map
-		for (Viajero viajeroTmp: viajeros) {
-			MarkerOptions markerOptions = new MarkerOptions()
-				.position(viajeroTmp.getPosition())
-				.snippet(getResources().getString(R.string.marker_instruction));
 
-			String city = viajeroTmp.getCity();
-			String country = viajeroTmp.getCountry();
-			if (city.equalsIgnoreCase(country)) {
-				markerOptions.title(country);
-			} else {
-				markerOptions.title(city + ", " + country);
-			}
-
-			Marker marker = googleMap.addMarker(markerOptions);
-			
-			// Add the data to the hash map
-			urlMaps.put(marker, viajeroTmp.getUrl());
-			markerByLocation.put(viajeroTmp.getPosition(), marker);
-			// Set the icon
-			switch (viajeroTmp.getChannel()) {
-			case RTVE:
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-				break;
-			case CUATRO:
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-				break;
-			case TELEMADRID:
-				// TODO: Set it white
-				marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-				break;
-			default:
-				Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
-			}
-		}
-
-		googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-			
-			@Override
-			public void onInfoWindowClick(Marker marker) {
-				// Open a web page
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse(urlMaps.get(marker)));
-				startActivity(intent);
-			}
-		});
-	}
-	
-	public void selectItem(int position) {
+	private void selectItem(int position) {
 		if (position < 0 || position > viajeros.size() -1 ) {
 			Log.e(LOG_TAG, "The position selected is not correct: " + position);
 			return;
