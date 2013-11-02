@@ -280,6 +280,9 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Get the title followed by the position
 		Viajero viajero = viajeros.get(position);
 		setTitle(viajero.getCity());
+		
+		// Select the viajero in the map
+		worldMapFragment.selectItem(position);
 	}
 
 	@Override

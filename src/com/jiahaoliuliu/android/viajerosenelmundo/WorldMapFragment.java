@@ -1,9 +1,7 @@
 package com.jiahaoliuliu.android.viajerosenelmundo;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -17,11 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,9 +27,9 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.jiahaoliuliu.android.viajerosenelmundo.callback.Callback;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
@@ -53,9 +48,13 @@ public class WorldMapFragment extends Fragment {
 	private FragmentManager supportFragmentManager;
 
 	private GoogleMap googleMap;
+	// The callback to wait the google Map to be ready for the first time.
+	private Callback googleMapCallback;
 	private Geocoder geoCoder;
 	private Marker marker;
 	private List<Viajero> viajeros;
+	// The callback to wait the list of viajeros to be ready for the first time.
+	private Callback listDataCallback;
     private HashMap<Marker, String> urlMaps = new HashMap<Marker, String>();
     private HashMap<LatLng, Marker> markerByLocation = new HashMap<LatLng, Marker>();
 
@@ -72,6 +71,9 @@ public class WorldMapFragment extends Fragment {
 		try {
 			listViajerosProvider = (ListViajerosProvider) activity;
 			viajeros = listViajerosProvider.getListViajeros();
+			if (listDataCallback != null) {
+				listDataCallback.done();
+			}
 		} catch (ClassCastException classCastException) {
 			throw new ClassCastException(activity.toString() + " must implement ListViajerosProvider");
 		}
@@ -153,6 +155,11 @@ public class WorldMapFragment extends Fragment {
 							startActivity(intent);
 						}
 					});
+
+					// Notify that the google maps is ready.
+					if (googleMapCallback != null) {
+						googleMapCallback.done();
+					}
 				}
 		    }
 	    } catch (InflateException e) {
@@ -162,18 +169,53 @@ public class WorldMapFragment extends Fragment {
 	    return view;
 	}
 
-	private void selectItem(int position) {
+	public void selectItem(final int position) {
+		if (viajeros == null) {
+			Log.w(LOG_TAG, "The list of viajero is not ready yet.");
+			listDataCallback = new Callback() {
+				
+				@Override
+				public void done() {
+					selectItemWhenListDataIsReady(position);
+					listDataCallback = null;
+				}
+			};
+			return;
+		}
+
+		selectItemWhenListDataIsReady(position);
+	}
+	
+	private void selectItemWhenListDataIsReady(final int position) {
 		if (position < 0 || position > viajeros.size() -1 ) {
 			Log.e(LOG_TAG, "The position selected is not correct: " + position);
 			return;
 		}
 
-		Viajero viajero = viajeros.get(position);
+		if (googleMap == null) {
+			Log.w(LOG_TAG, "The google map is not ready yet");
+			googleMapCallback = new Callback() {
+				
+				@Override
+				public void done() {
+					selectItemWhenMapsIsReady(position);
+					googleMapCallback = null;
+				}
+			};
+			return;
+		}
+
+		selectItemWhenMapsIsReady(position);
+	}
+	
+	private void selectItemWhenMapsIsReady(int position) {
+		final Viajero viajero = viajeros.get(position);
 
 		int startZoomLevel = viajero.getZoomLevel() - ZOOM_ANIMATION_LEVEL;
 		if (startZoomLevel < MOST_ZOOM_LEVEL) {
 			startZoomLevel = MOST_ZOOM_LEVEL;
 		}
+
 		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(viajero.getPosition(), startZoomLevel));
 	    // Zoom in, animating the camera.
 		Log.v(LOG_TAG, "Going to the zoom level " + viajero.getZoomLevel());
