@@ -17,7 +17,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +30,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.jiahaoliuliu.android.viajerosenelmundo.callback.Callback;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
-import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 
 public class WorldMapFragment extends Fragment {
@@ -44,14 +42,11 @@ public class WorldMapFragment extends Fragment {
 	private Context context;
 	private Activity activity;
 	private ListViajerosProvider listViajerosProvider;
-	private onErrorReceivedListener onErrorReceivedListener;
 	private FragmentManager supportFragmentManager;
 
 	private GoogleMap googleMap;
 	// The callback to wait the google Map to be ready for the first time.
 	private Callback googleMapCallback;
-	private Geocoder geoCoder;
-	private Marker marker;
 	private List<Viajero> viajeros;
 	// The callback to wait the list of viajeros to be ready for the first time.
 	private Callback listDataCallback;
@@ -62,12 +57,6 @@ public class WorldMapFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		// Check the implementation
-		try {
-			onErrorReceivedListener = (onErrorReceivedListener) activity;
-		} catch (ClassCastException classCastException) {
-			throw new ClassCastException(activity.toString() + " must implement OnErrorReceivedListener");
-		}
-		
 		try {
 			listViajerosProvider = (ListViajerosProvider) activity;
 			viajeros = listViajerosProvider.getListViajeros();
@@ -105,63 +94,58 @@ public class WorldMapFragment extends Fragment {
 				googleMap = ((SupportMapFragment)supportFragmentManager
 						.findFragmentById(R.id.map))
 						.getMap();
-				if (googleMap == null) {
-				    // TODO: Send the error to the activity
-					Log.e(LOG_TAG, "Error getting the google Map. It seems null");
-				} else {
-					// Draw all the points to the map
-					for (Viajero viajeroTmp: viajeros) {
-						MarkerOptions markerOptions = new MarkerOptions()
-							.position(viajeroTmp.getPosition())
-							.snippet(getResources().getString(R.string.marker_instruction));
+				// Draw all the points to the map
+				for (Viajero viajeroTmp: viajeros) {
+					MarkerOptions markerOptions = new MarkerOptions()
+						.position(viajeroTmp.getPosition())
+						.snippet(getResources().getString(R.string.marker_instruction));
 
-						String city = viajeroTmp.getCity();
-						String country = viajeroTmp.getCountry();
-						if (city.equalsIgnoreCase(country)) {
-							markerOptions.title(country);
-						} else {
-							markerOptions.title(city + ", " + country);
-						}
-
-						Marker marker = googleMap.addMarker(markerOptions);
-						
-						// Add the data to the hash map
-						urlMaps.put(marker, viajeroTmp.getUrl());
-						markerByLocation.put(viajeroTmp.getPosition(), marker);
-						// Set the icon
-						switch (viajeroTmp.getChannel()) {
-						case RTVE:
-							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-							break;
-						case CUATRO:
-							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-							break;
-						case TELEMADRID:
-							// TODO: Set it white
-							marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-							break;
-						default:
-							Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
-						}
+					String city = viajeroTmp.getCity();
+					String country = viajeroTmp.getCountry();
+					if (city.equalsIgnoreCase(country)) {
+						markerOptions.title(country);
+					} else {
+						markerOptions.title(city + ", " + country);
 					}
 
-					googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-						
-						@Override
-						public void onInfoWindowClick(Marker marker) {
-							// Open a web page
-							Intent intent = new Intent(Intent.ACTION_VIEW);
-							intent.setData(Uri.parse(urlMaps.get(marker)));
-							startActivity(intent);
-						}
-					});
-
-					// Notify that the google maps is ready.
-					if (googleMapCallback != null) {
-						googleMapCallback.done();
+					Marker marker = googleMap.addMarker(markerOptions);
+					
+					// Add the data to the hash map
+					urlMaps.put(marker, viajeroTmp.getUrl());
+					markerByLocation.put(viajeroTmp.getPosition(), marker);
+					// Set the icon
+					switch (viajeroTmp.getChannel()) {
+					case RTVE:
+						marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+						break;
+					case CUATRO:
+						marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+						break;
+					case TELEMADRID:
+						// TODO: Set it white
+						marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+						break;
+					default:
+						Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
 					}
 				}
-		    }
+
+				googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+					
+					@Override
+					public void onInfoWindowClick(Marker marker) {
+						// Open a web page
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(Uri.parse(urlMaps.get(marker)));
+						startActivity(intent);
+					}
+				});
+
+				// Notify that the google maps is ready.
+				if (googleMapCallback != null) {
+					googleMapCallback.done();
+				}
+			}
 	    } catch (InflateException e) {
 	        /* map is already there, just return view as it is */
 	    	Log.w(LOG_TAG, "Error inflating the view." + e.getLocalizedMessage());
