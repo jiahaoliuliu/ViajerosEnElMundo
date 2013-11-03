@@ -36,6 +36,7 @@ import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 public class WorldMapFragment extends Fragment {
 
 	private static final String LOG_TAG = WorldMapFragment.class.getSimpleName();
+	
 	private static final int ZOOM_ANIMATION_LEVEL = 5;
 	private static final int MOST_ZOOM_LEVEL = 1;
 
@@ -218,4 +219,5 @@ public class WorldMapFragment extends Fragment {
 			marker.showInfoWindow();
 		}
 	}
+	
 }

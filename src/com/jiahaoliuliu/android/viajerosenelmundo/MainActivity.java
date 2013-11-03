@@ -19,6 +19,7 @@ import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.app.AlertDialog;
@@ -38,6 +39,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.view.GravityCompat;
 
 public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener, ListViajerosProvider, OnUrlReceivedListener{
@@ -47,9 +49,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 	private static final int MENU_BUTTON_RANDOM_ID = 10000;
 	private static final int MENU_BUTTON_ABOUT_ME_ID = 10001;
-	
-	private static final String WORLD_MAP_FRAGMENT_ID = "com.jiahaoliuliu.viajerosenelmundo.worldmapfragment";
 
+	private Context context;
 	private FragmentManager fragmentManager;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -59,6 +60,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	private CharSequence mTitle;
 
 	private WorldMapFragment worldMapFragment;
+	private WebViewFragment webViewFragment;
 
 	private List<Viajero> viajeros;
 
@@ -83,6 +85,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_main);
+
+		context = this;
 
 		// Get the title
 		mTitle = mDrawerTitle = getTitle();
@@ -154,10 +158,13 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 		mDrawerList.setOnScrollListener(this);
 
+		// Creates the web view fragment
+		webViewFragment = new WebViewFragment();
+
 		// Attach the worldmap
 		worldMapFragment = new WorldMapFragment();
 		FragmentTransaction ft = fragmentManager.beginTransaction();
-		ft.replace(R.id.content_frame, worldMapFragment, WORLD_MAP_FRAGMENT_ID);
+		ft.replace(R.id.content_frame, worldMapFragment, WorldMapFragment.class.toString());
 		ft.commit();
 		
 		// Go to the random city
@@ -281,7 +288,17 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		// Get the title followed by the position
 		Viajero viajero = viajeros.get(position);
 		setTitle(viajero.getCity());
-		
+
+		// Change to the right fragment if needed
+		Fragment fragmentShown = fragmentManager.findFragmentById(R.id.content_frame);
+		if (fragmentShown != null && !fragmentShown.getTag().equals(WorldMapFragment.class.toString())) {
+			Log.v(LOG_TAG, "The content frame does not contains the world map fragment. Replacing it");
+			Log.v(LOG_TAG, "Tag: " + fragmentShown.getTag());
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.replace(R.id.content_frame, worldMapFragment, WorldMapFragment.class.toString());
+			ft.commit();
+		}
+
 		// Select the viajero in the map
 		worldMapFragment.selectItem(position);
 	}
@@ -313,7 +330,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     protected Dialog onCreateDialog(int id) {
 		return new AlertDialog.Builder(this)
         .setTitle("Acerce de")
-        .setMessage("Esta aplicaci�n pretende reunir los programas de la televisi�n sobre viajes y ubicarlas en la mapa para facilitar la navegaci�n.\n\n" +
+        .setMessage("Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n" +
         		"Contribuye su mejora poniendolo en un comentario y vontandola.\n\n" +
         		"Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n")
         .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
@@ -381,8 +398,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
     public void onScrollStateChanged(AbsListView view, int scrollState) {
     }
-    
-    
+
     private void removeWindow() {
         if (mShowing) {
             mShowing = false;
@@ -400,6 +416,7 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
     
 	public void onErrorReceived(int errorCode, String errorMessage) {
 		Log.e(LOG_TAG, "Error received with code: " + errorCode + ", and message: " + errorMessage);
+		Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
 	}
 
 	public List<Viajero> getListViajeros() {
@@ -408,6 +425,11 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 
 	public void onUrlReceived(String url) {
 		Log.v(LOG_TAG, "New url received: " + url);
+		// TODO: Try to load the web page
+		webViewFragment.setUrl(url);
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+		ft.replace(R.id.content_frame, webViewFragment, WebViewFragment.class.toString());
+		ft.commit();
 	}
 
     private void printCities() {
