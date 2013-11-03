@@ -1,4 +1,4 @@
-package com.jiahaoliuliu.android.viajerosenelmundo.callback;
+package com.jiahaoliuliu.android.viajerosenelmundo.interfaces;
 
 public interface Callback {
 

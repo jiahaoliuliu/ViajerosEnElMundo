@@ -28,7 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.SupportMapFragment;
-import com.jiahaoliuliu.android.viajerosenelmundo.callback.Callback;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.Callback;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
