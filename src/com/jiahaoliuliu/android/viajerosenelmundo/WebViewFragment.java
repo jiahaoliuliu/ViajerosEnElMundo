@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebSettings.PluginState;
 
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
@@ -46,8 +49,15 @@ public class WebViewFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.web_view_fragment, container, false);
 		webView = (WebView)view.findViewById(R.id.webView);
-		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebViewClient(new SampleWebClient());
+		webView.setWebChromeClient(new WebChromeClient());
+
+		WebSettings webSettings = webView.getSettings();
+		webSettings.setJavaScriptEnabled(true);
+		webSettings.setBuiltInZoomControls(true);
+		//webSettings.setPluginState(PluginState.ON);
+		webSettings.setUserAgentString("Android");
+
 		if (url != null) {
 			webView.loadUrl(url);
 		}
