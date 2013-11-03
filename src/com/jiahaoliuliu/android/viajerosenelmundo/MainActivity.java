@@ -9,9 +9,11 @@ import java.util.Set;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.google.android.gms.maps.model.LatLng;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
@@ -42,7 +44,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.view.GravityCompat;
 
-public class MainActivity extends SherlockFragmentActivity implements ListView.OnScrollListener, onErrorReceivedListener, ListViajerosProvider, OnUrlReceivedListener{
+public class MainActivity extends SherlockFragmentActivity implements
+	ListView.OnScrollListener,
+	onErrorReceivedListener, ListViajerosProvider, OnUrlReceivedListener, 
+	ProgressBarShowListener {
 
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -84,6 +89,8 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
+
 		setContentView(R.layout.drawer_main);
 
 		context = this;
@@ -432,6 +439,14 @@ public class MainActivity extends SherlockFragmentActivity implements ListView.O
 		ft.commit();
 	}
 
+	public void showProgressBar() {
+		setProgressBarIndeterminateVisibility(true);
+	}
+
+	public void hideProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
+	}
+	
     private void printCities() {
     	// The list of the cities
     	ArrayList<String> countriesList = new ArrayList<String>();

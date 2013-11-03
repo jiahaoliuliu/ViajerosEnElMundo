@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 
 public class WebViewFragment extends Fragment {
@@ -19,7 +20,26 @@ public class WebViewFragment extends Fragment {
 	
 	private WebView webView;
 	private onErrorReceivedListener onErrorReceivedListener;
+	private ProgressBarShowListener progressBarShownListener;
 	private String url;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			onErrorReceivedListener = (onErrorReceivedListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + 
+					" must implement OnNewItemAddedListener");
+		}
+		
+		try {
+			progressBarShownListener = (ProgressBarShowListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + 
+					" must implement ProgressBarShownListener");
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +62,7 @@ public class WebViewFragment extends Fragment {
 		
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        	progressBarShownListener.showProgressBar();
         	view.setClickable(false);
         	view.setLongClickable(false);
         	view.setEnabled(false);
@@ -49,6 +70,7 @@ public class WebViewFragment extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+        	progressBarShownListener.hideProgressBar();
         	view.setClickable(true);
         	view.setLongClickable(true);
         	view.setEnabled(true);
@@ -63,6 +85,7 @@ public class WebViewFragment extends Fragment {
 				"ErrorCode: " + errorCode + "\n" +
 				"Descripction: " + description + "\n" +
 				"Failing Url: " + failingUrl);
+			progressBarShownListener.hideProgressBar();
 			onErrorReceivedListener.onErrorReceived(errorCode, description);
 		}
 	}
@@ -73,17 +96,6 @@ public class WebViewFragment extends Fragment {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			onErrorReceivedListener = (onErrorReceivedListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + 
-					" must implement OnNewItemAddedListener");
-		}
 	}
 
 	/*
