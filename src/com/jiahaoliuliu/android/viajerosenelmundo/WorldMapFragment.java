@@ -103,9 +103,6 @@ public class WorldMapFragment extends Fragment {
 						.getMap();
 				// When tilt, the view will be created again and the viajeros will be null
 				viajeros = listViajerosProvider.getListViajeros();
-				if (listDataCallback != null) {
-					listDataCallback.done();
-				}
 
 				// Draw all the points to the map
 				for (Viajero viajeroTmp: viajeros) {
@@ -141,6 +138,11 @@ public class WorldMapFragment extends Fragment {
 					default:
 						Log.e(LOG_TAG, "Channel not recognized " + viajeroTmp.getChannel().toString());
 					}
+				}
+
+				// Show the market selected
+				if (listDataCallback != null) {
+					listDataCallback.done();
 				}
 
 				googleMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {

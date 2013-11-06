@@ -219,6 +219,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 					mDrawerLayout.openDrawer(mDrawerList);
 				}
 			}
+			return true;
 		} else if (item.getItemId() == MENU_BUTTON_RANDOM_ID) {
 			if (!viajeros.isEmpty()) {
 				int randomPosition = randomPositionGenerator();
@@ -228,6 +229,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 					Log.e(LOG_TAG, "Error getting the random city. The position is " + randomPosition);
 				}
 			}
+			return true;
 		} else if (item.getItemId() == MENU_BUTTON_ABOUT_ME_ID) {
 			// Show alert message
 			showDialog(0);
