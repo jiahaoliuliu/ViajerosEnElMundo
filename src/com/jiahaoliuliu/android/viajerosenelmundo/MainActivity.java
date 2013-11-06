@@ -69,13 +69,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	private List<Viajero> viajeros;
 
-	// Special screen text
-    private final class RemoveWindow implements Runnable {
-        public void run() {
-            removeWindow();
-        }
-    }
-
     private RemoveWindow mRemoveWindow = new RemoveWindow();
     Handler mHandler = new Handler();
     private boolean mHandlerPosted = false;
@@ -190,28 +183,9 @@ public class MainActivity extends SherlockFragmentActivity implements
         
         mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
         mDialogText.setVisibility(View.INVISIBLE);
-
 	}
 
-	private void createBigIndex() {
-		if (!mHandlerPosted) {
-	        mHandler.post(new Runnable() {
-
-	            public void run() {
-	                mReady = true;
-	                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-	                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-	                        WindowManager.LayoutParams.TYPE_APPLICATION,
-	                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-	                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-	                        PixelFormat.TRANSLUCENT);
-	                mWindowManager.addView(mDialogText, lp);
-	                viewAddedToTheWindows = true;
-	            }});
-	        mHandlerPosted = true;
-		}
-	}
-
+	//======================================= Menu ==============================================
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	// Random
@@ -261,6 +235,24 @@ public class MainActivity extends SherlockFragmentActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+		return new AlertDialog.Builder(this)
+        .setTitle("Acerce de")
+        .setMessage("Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n" +
+        		"Contribuye su mejora poniendolo en un comentario y vontandola.\n\n" +
+        		"Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n")
+        .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                /* User clicked OK so do some stuff */
+            }
+        })
+        .create();
+    }
+
+	//======================================= Drawer ==============================================
+
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
 		@Override
@@ -269,7 +261,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			selectItem(position, true);
 		}
 	}
-	
+
 	/**
 	 * Select an item and show it on the map.
 	 * @param position The position of the list
@@ -325,6 +317,14 @@ public class MainActivity extends SherlockFragmentActivity implements
 			// Pass any configuration change to the drawer toggles
 			mDrawerToggle.onConfigurationChanged(newConfig);
 		}
+		
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+
 	}
 
 	@Override
@@ -332,86 +332,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 		mTitle = title;
 		getSupportActionBar().setTitle(mTitle);
 	}
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-		return new AlertDialog.Builder(this)
-        .setTitle("Acerce de")
-        .setMessage("Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n" +
-        		"Contribuye su mejora poniendolo en un comentario y vontandola.\n\n" +
-        		"Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n")
-        .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                /* User clicked OK so do some stuff */
-            }
-        })
-        .create();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mReady = true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        removeWindow();
-        mReady = false;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (viewAddedToTheWindows) {
-        	mWindowManager.removeView(mDialogText);
-        }
-        mReady = false;
-    }
-
-    public void onScroll(AbsListView view, int firstVisibleItem,
-            int visibleItemCount, int totalItemCount) {
-        if (mReady) {
-            char firstLetter = viajeros.get(firstVisibleItem).getCity().charAt(0);
-            
-            if (!mShowing && !equalLetters(firstLetter, mPrevLetter)) {
-
-                mShowing = true;
-                mDialogText.setVisibility(View.VISIBLE);
-            }
-            
-            // Special case for "Á"
-            if (firstLetter == 'Á') {
-            	firstLetter = 'A';
-            }
-
-            mDialogText.setText(((Character)firstLetter).toString());
-            mHandler.removeCallbacks(mRemoveWindow);
-            mHandler.postDelayed(mRemoveWindow, 3000);
-            mPrevLetter = firstLetter;
-        }
-    }
-
-    // Set the special case for "A" and "Á"
-    private boolean equalLetters(char firstLetter, char prevLetter) {
-        if (firstLetter == 'A' && prevLetter == 'Á') {
-        	return true;
-        } else {
-        	return firstLetter == prevLetter;
-        }
-    }
-
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-    }
-
-    private void removeWindow() {
-        if (mShowing) {
-            mShowing = false;
-            mDialogText.setVisibility(View.INVISIBLE);
-        }
-    }
 
     private int randomPositionGenerator() {
     	if (viajeros.size() > 0) {
@@ -421,6 +341,7 @@ public class MainActivity extends SherlockFragmentActivity implements
     	}
     }
     
+    // ======================================== Interfaces =======================================
 	public void onErrorReceived(int errorCode, String errorMessage) {
 		Log.e(LOG_TAG, "Error received with code: " + errorCode + ", and message: " + errorMessage);
 		Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
@@ -447,6 +368,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		setProgressBarIndeterminateVisibility(false);
 	}
 	
+	// ================================================= Others =====================================
     private void printCities() {
     	// The list of the cities
     	ArrayList<String> countriesList = new ArrayList<String>();
@@ -524,6 +446,7 @@ public class MainActivity extends SherlockFragmentActivity implements
     		}
     	}
     }
+
 	private void addData() {
 		// Add data
 
@@ -2631,6 +2554,99 @@ public class MainActivity extends SherlockFragmentActivity implements
 		viajero.setChannel(ChannelId.RTVE);
 		viajero.setUrl("http://www.rtve.es/television/20120601/zimbabue-africa-mas-salvaje/532734.shtml");
 		viajeros.add(viajero);
-
 	}
+	
+	
+	//========================================== Big index ============================================
+	// Special screen text
+    private final class RemoveWindow implements Runnable {
+        public void run() {
+            removeWindow();
+        }
+    }
+
+	private void createBigIndex() {
+		if (!mHandlerPosted) {
+	        mHandler.post(new Runnable() {
+
+	            public void run() {
+	                mReady = true;
+	                WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+	                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+	                        WindowManager.LayoutParams.TYPE_APPLICATION,
+	                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+	                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+	                        PixelFormat.TRANSLUCENT);
+	                mWindowManager.addView(mDialogText, lp);
+	                viewAddedToTheWindows = true;
+	            }});
+	        mHandlerPosted = true;
+		}
+	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mReady = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        removeWindow();
+        mReady = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (viewAddedToTheWindows) {
+        	mWindowManager.removeView(mDialogText);
+        }
+        mReady = false;
+    }
+
+    public void onScroll(AbsListView view, int firstVisibleItem,
+            int visibleItemCount, int totalItemCount) {
+        if (mReady) {
+            char firstLetter = viajeros.get(firstVisibleItem).getCity().charAt(0);
+            
+            if (!mShowing && !equalLetters(firstLetter, mPrevLetter)) {
+
+                mShowing = true;
+                mDialogText.setVisibility(View.VISIBLE);
+            }
+            
+            // Special case for "Á"
+            if (firstLetter == 'Á') {
+            	firstLetter = 'A';
+            }
+
+            mDialogText.setText(((Character)firstLetter).toString());
+            mHandler.removeCallbacks(mRemoveWindow);
+            mHandler.postDelayed(mRemoveWindow, 3000);
+            mPrevLetter = firstLetter;
+        }
+    }
+
+    // Set the special case for "A" and "Á"
+    private boolean equalLetters(char firstLetter, char prevLetter) {
+        if (firstLetter == 'A' && prevLetter == 'Á') {
+        	return true;
+        } else {
+        	return firstLetter == prevLetter;
+        }
+    }
+
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+    }
+
+    private void removeWindow() {
+        if (mShowing) {
+            mShowing = false;
+            mDialogText.setVisibility(View.INVISIBLE);
+        }
+    }
+
+	
 }
