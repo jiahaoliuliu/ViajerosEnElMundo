@@ -62,10 +62,6 @@ public class WorldMapFragment extends Fragment {
 		// Check the implementation
 		try {
 			listViajerosProvider = (ListViajerosProvider) activity;
-			viajeros = listViajerosProvider.getListViajeros();
-			if (listDataCallback != null) {
-				listDataCallback.done();
-			}
 		} catch (ClassCastException classCastException) {
 			Log.e(LOG_TAG, "The attached class has not implemented ListViajerosProvider. ", classCastException);
 			throw new ClassCastException(activity.toString() + " must implement ListViajerosProvider.");
@@ -105,6 +101,12 @@ public class WorldMapFragment extends Fragment {
 				googleMap = ((SupportMapFragment)supportFragmentManager
 						.findFragmentById(R.id.map))
 						.getMap();
+				// When tilt, the view will be created again and the viajeros will be null
+				viajeros = listViajerosProvider.getListViajeros();
+				if (listDataCallback != null) {
+					listDataCallback.done();
+				}
+
 				// Draw all the points to the map
 				for (Viajero viajeroTmp: viajeros) {
 					MarkerOptions markerOptions = new MarkerOptions()
