@@ -107,6 +107,19 @@ public class WebViewFragment extends Fragment {
 		return false;
 	}
 
+	@Override
+	public void onPause() {
+	    super.onPause();
+
+	    try {
+	        Class.forName("android.webkit.WebView")
+	                .getMethod("onPause", (Class[]) null)
+	                            .invoke(webView, (Object[]) null);
+
+	    } catch (Exception e) {
+	    	Log.e(LOG_TAG, "Error pausing the web view ", e);
+	    }
+	}
     @Override
     public void onDetach() {
         super.onDetach();
