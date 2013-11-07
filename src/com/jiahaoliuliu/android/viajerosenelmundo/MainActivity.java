@@ -319,14 +319,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 			// Pass any configuration change to the drawer toggles
 			mDrawerToggle.onConfigurationChanged(newConfig);
 		}
-		
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-        }
-
 	}
 
 	@Override
@@ -355,7 +347,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	public void onUrlReceived(String url) {
 		Log.v(LOG_TAG, "New url received: " + url);
-		// TODO: Try to load the web page
+		// Try to load the web page
 		webViewFragment.setUrl(url);
 		FragmentTransaction ft = fragmentManager.beginTransaction();
 		ft.replace(R.id.content_frame, webViewFragment, WebViewFragment.class.toString());

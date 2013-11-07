@@ -62,13 +62,9 @@ public class WebViewFragment extends Fragment {
 		}
 		return view;
 	}
-	
+
 	public void setUrl(String url) {
 		this.url = url;
-		// If the web view has been created, load the url
-		if (webView != null) {
-			webView.loadUrl(url);
-		}
 	}
 
 	private class SampleWebClient extends WebViewClient {
@@ -111,11 +107,11 @@ public class WebViewFragment extends Fragment {
 		return false;
 	}
 
-	/*
     @Override
     public void onDetach() {
         super.onDetach();
+        progressBarShownListener.hideProgressBar();
         webView.removeAllViews();
         webView.destroy();
-    }*/
+    }
 }
