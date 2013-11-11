@@ -32,6 +32,7 @@ import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -78,6 +79,7 @@ public class MainActivity extends SherlockFragmentActivity implements
     private boolean mShowing;
     private boolean mReady;
     private char mPrevLetter = Character.MIN_VALUE;
+    private AlertDialog closeAppAlertDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +185,7 @@ public class MainActivity extends SherlockFragmentActivity implements
         
         mDialogText = (TextView) inflate.inflate(R.layout.list_position, null);
         mDialogText.setVisibility(View.INVISIBLE);
+        
 	}
 
 	//======================================= Menu ==============================================
@@ -363,7 +366,45 @@ public class MainActivity extends SherlockFragmentActivity implements
 	}
 	
 	// ================================================= Others =====================================
-    private void printCities() {
+    // Handle back button
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	if (closeAppAlertDialog == null) {
+        		closeAppAlertDialog = createCloseAlertDialog();
+        	}
+        	
+        	closeAppAlertDialog.show();
+            return true; // To finish here and say the key has been handled
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+	
+    private AlertDialog createCloseAlertDialog() {
+    	return new AlertDialog.Builder(
+                context)
+        .setTitle("Salir de la aplicación")
+        .setMessage("¿Estás seguro de que quieres salir de la aplicación?")
+        .setPositiveButton("Sí",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                            int which) {
+                    	finish();
+                    }
+                })
+        .setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                            int which) {
+                        dialog.dismiss();
+                    }
+                })
+        .create();
+    }
+
+	private void printCities() {
     	// The list of the cities
     	ArrayList<String> countriesList = new ArrayList<String>();
     	HashMap<String, ArrayList<String>> allCities = new HashMap<String, ArrayList<String>>();
