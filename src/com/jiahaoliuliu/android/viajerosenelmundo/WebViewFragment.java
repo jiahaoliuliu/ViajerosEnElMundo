@@ -69,6 +69,14 @@ public class WebViewFragment extends Fragment {
 
 	private class SampleWebClient extends WebViewClient {
 		
+		@Override
+		public boolean shouldOverrideUrlLoading (WebView view, String newUrl) {
+			if (url != null) {
+				view.loadUrl(url);
+			}
+			return true;
+		}
+		
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
         	progressBarShownListener.showProgressBar();
