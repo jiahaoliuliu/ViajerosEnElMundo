@@ -345,6 +345,11 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public void onErrorReceived(int errorCode, String errorMessage) {
 		Log.e(LOG_TAG, "Error received with code: " + errorCode + ", and message: " + errorMessage);
 		Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
+		// If it was not map view (for example, web view), come back to map view
+		Fragment fragmentShown = fragmentManager.findFragmentById(R.id.content_frame);
+		if (fragmentShown != null && !fragmentShown.getTag().equals(WorldMapFragment.class.toString())) {
+			fragmentManager.popBackStack();
+		}
 	}
 
 	public List<Viajero> getListViajeros() {

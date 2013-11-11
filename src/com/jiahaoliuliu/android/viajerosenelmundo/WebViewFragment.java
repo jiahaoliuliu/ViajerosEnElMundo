@@ -102,8 +102,20 @@ public class WebViewFragment extends Fragment {
 				"ErrorCode: " + errorCode + "\n" +
 				"Descripction: " + description + "\n" +
 				"Failing Url: " + failingUrl);
+			
+			String errorMessage = "Error desconocido. Por favor, intentadlo de nuevo más tarde";
+			switch (errorCode) {
+			case WebViewClient.ERROR_HOST_LOOKUP:
+			case WebViewClient.ERROR_CONNECT:
+				errorMessage = "Error de conexión con el servidor. Comprueba que tienes conexión a internet.";
+				break;
+			case WebViewClient.ERROR_TIMEOUT:
+				errorMessage = "Lo sentimos. El tiempo de conexión se ha expirado. Intentadlo más tarde.";
+				break;
+			}
+
 			progressBarShownListener.hideProgressBar();
-			onErrorReceivedListener.onErrorReceived(errorCode, description);
+			onErrorReceivedListener.onErrorReceived(errorCode, errorMessage);
 		}
 	}
 
