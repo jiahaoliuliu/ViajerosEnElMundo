@@ -293,6 +293,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 		Viajero viajero = viajeros.get(position);
 		setTitle(viajero.getCity());
 
+		// Remove all the backstack
+		fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
 		// Change to the right fragment if needed
 		Fragment fragmentShown = fragmentManager.findFragmentById(R.id.content_frame);
 		if (fragmentShown != null && !fragmentShown.getTag().equals(WorldMapFragment.class.toString())) {
@@ -354,6 +357,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		webViewFragment.setUrl(url);
 		FragmentTransaction ft = fragmentManager.beginTransaction();
 		ft.replace(R.id.content_frame, webViewFragment, WebViewFragment.class.toString());
+		ft.addToBackStack(WebViewFragment.class.toString());
 		ft.commit();
 	}
 
@@ -370,11 +374,17 @@ public class MainActivity extends SherlockFragmentActivity implements
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-        	if (closeAppAlertDialog == null) {
-        		closeAppAlertDialog = createCloseAlertDialog();
-        	}
-        	
-        	closeAppAlertDialog.show();
+        	// If it is showing the webViewFragment, show the mapFragment
+    		Fragment fragmentShown = fragmentManager.findFragmentById(R.id.content_frame);
+    		if (fragmentShown != null && !fragmentShown.getTag().equals(WorldMapFragment.class.toString())) {
+    			fragmentManager.popBackStack();
+    		} else {
+    			// If the app was already on the map fragment, show the alert dialog
+    			if (closeAppAlertDialog == null) {
+    				closeAppAlertDialog = createCloseAlertDialog();
+    			}
+    			closeAppAlertDialog.show();
+    		}
             return true; // To finish here and say the key has been handled
         }
         return super.onKeyDown(keyCode, event);
