@@ -109,8 +109,11 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		// Link the content
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+
 		mDrawerList = (ListView)findViewById(R.id.listview_drawer);
+
 		mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
+		
 		mDrawerList.setAdapter(mMenuAdapter);
 
 		// If there is not drawer because it is a tablet
@@ -369,31 +372,25 @@ public class MainActivity extends SherlockFragmentActivity implements
 	}
 
 	public void showProgressBar() {
-		// Hide the status bar
 		setProgressBarIndeterminateVisibility(true);
-		
-		// Lock the drawer if set
-		if (mDrawerLayout != null) {
-			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-		}
 	}
 
 	public void hideProgressBar() {
-		// Show the status bar
 		setProgressBarIndeterminateVisibility(false);
-
-		// Unlock the drawer if set
-		if (mDrawerLayout != null) {
-			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-		}
 	}
 	
 	public void requestGoToFullScreen() {
 		getSupportActionBar().hide();
+		if (mDrawerLayout != null) {
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		}
 	}
 	
 	public void requestHideFullScreen() {
 		getSupportActionBar().show();
+		if (mDrawerLayout != null) {
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		}
 	}
 	// ================================================= Others =====================================
     // Handle back button
