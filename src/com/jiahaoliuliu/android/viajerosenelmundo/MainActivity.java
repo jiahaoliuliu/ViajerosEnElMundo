@@ -12,12 +12,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.android.gms.maps.model.LatLng;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnFullScreenRequestListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
 
+import android.media.AudioRecord.OnRecordPositionUpdateListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -48,7 +50,9 @@ import android.support.v4.view.GravityCompat;
 public class MainActivity extends SherlockFragmentActivity implements
 	ListView.OnScrollListener,
 	onErrorReceivedListener, ListViajerosProvider, OnUrlReceivedListener, 
-	ProgressBarShowListener {
+	ProgressBarShowListener,
+	OnFullScreenRequestListener
+	{
 
 	// Variables
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -105,11 +109,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		// Link the content
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
 		mDrawerList = (ListView)findViewById(R.id.listview_drawer);
-
 		mMenuAdapter = new MenuListAdapter(MainActivity.this, viajeros);
-		
 		mDrawerList.setAdapter(mMenuAdapter);
 
 		// If there is not drawer because it is a tablet
@@ -368,13 +369,32 @@ public class MainActivity extends SherlockFragmentActivity implements
 	}
 
 	public void showProgressBar() {
+		// Hide the status bar
 		setProgressBarIndeterminateVisibility(true);
+		
+		// Lock the drawer if set
+		if (mDrawerLayout != null) {
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		}
 	}
 
 	public void hideProgressBar() {
+		// Show the status bar
 		setProgressBarIndeterminateVisibility(false);
+
+		// Unlock the drawer if set
+		if (mDrawerLayout != null) {
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		}
 	}
 	
+	public void requestGoToFullScreen() {
+		getSupportActionBar().hide();
+	}
+	
+	public void requestHideFullScreen() {
+		getSupportActionBar().show();
+	}
 	// ================================================= Others =====================================
     // Handle back button
     @Override

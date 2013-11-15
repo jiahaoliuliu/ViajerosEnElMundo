@@ -16,6 +16,7 @@ import android.webkit.WebSettings.PluginState;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnFullScreenRequestListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
 
@@ -26,6 +27,7 @@ public class WebViewFragment extends Fragment {
 	private WebView webView;
 	private onErrorReceivedListener onErrorReceivedListener;
 	private ProgressBarShowListener progressBarShownListener;
+	private OnFullScreenRequestListener onFullScreenRequestListener;
 	private String url;
 	
 	private MyWebChromeClient mWebChromeClient = null;
@@ -48,6 +50,13 @@ public class WebViewFragment extends Fragment {
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString() + 
 					" must implement ProgressBarShownListener");
+		}
+		
+		try {
+			onFullScreenRequestListener = (OnFullScreenRequestListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + 
+					" must implement OnFullScreenRequestListener");
 		}
 	}
 
@@ -124,9 +133,6 @@ public class WebViewFragment extends Fragment {
 	}
 
 	private class MyWebChromeClient extends WebChromeClient {
-	    FrameLayout.LayoutParams LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-	            FrameLayout.LayoutParams.MATCH_PARENT);
-
 	    @Override
 	    public void onShowCustomView(View view, CustomViewCallback callback) {
 	    	Log.v(LOG_TAG, "Trying to show the custom view.");
@@ -138,6 +144,7 @@ public class WebViewFragment extends Fragment {
 	        }
 
 	        webView.setVisibility(View.GONE);
+	        onFullScreenRequestListener.requestGoToFullScreen();
 	        mCustomViewContainer.addView(view);
 	        mCustomView = view;
 	        mCustomViewCallback = callback;
@@ -153,6 +160,7 @@ public class WebViewFragment extends Fragment {
 	        } else {
 	            // Hide the custom view.  
 	            mCustomView.setVisibility(View.GONE);
+	            onFullScreenRequestListener.requestHideFullScreen();
 	            // Remove the custom view from its container.  
 	            mCustomViewContainer.removeView(mCustomView);
 	            mCustomView = null;
