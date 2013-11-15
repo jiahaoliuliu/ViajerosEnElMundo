@@ -68,7 +68,8 @@ public class WebViewFragment extends Fragment {
 		mCustomViewContainer = (FrameLayout) view.findViewById(R.id.fullscreen_custom_content);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.setWebViewClient(new SampleWebClient());
-		webView.setWebChromeClient(new MyWebChromeClient());
+		mWebChromeClient = new MyWebChromeClient();
+		webView.setWebChromeClient(mWebChromeClient);
 
 		WebSettings webSettings = webView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -173,7 +174,7 @@ public class WebViewFragment extends Fragment {
 	}
 	
 	public boolean goesBack() {
-		if (mCustomViewContainer != null) {
+		if (mCustomView != null) {
 	        mWebChromeClient.onHideCustomView();
 		} else if (webView.canGoBack()) {
 			webView.goBack();

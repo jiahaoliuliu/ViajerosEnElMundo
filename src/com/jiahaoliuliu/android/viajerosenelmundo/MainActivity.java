@@ -384,6 +384,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		if (mDrawerLayout != null) {
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		}
+		
+		mDrawerList.setVisibility(View.GONE);
 	}
 	
 	public void requestHideFullScreen() {
@@ -391,6 +393,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		if (mDrawerLayout != null) {
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 		}
+
+		mDrawerList.setVisibility(View.VISIBLE);
 	}
 	// ================================================= Others =====================================
     // Handle back button
@@ -400,6 +404,13 @@ public class MainActivity extends SherlockFragmentActivity implements
         	// If it is showing the webViewFragment, show the mapFragment
     		Fragment fragmentShown = fragmentManager.findFragmentById(R.id.content_frame);
     		if (fragmentShown != null && !fragmentShown.getTag().equals(WorldMapFragment.class.toString())) {
+    			// Check if it is the web view
+    			if (fragmentShown != null && fragmentShown.getTag().equals(WebViewFragment.class.toString())) {
+    				if (webViewFragment != null) {
+    					webViewFragment.goesBack();
+    				}
+    			}
+    			
     			fragmentManager.popBackStack();
     		} else {
     			// If the app was already on the map fragment, show the alert dialog
