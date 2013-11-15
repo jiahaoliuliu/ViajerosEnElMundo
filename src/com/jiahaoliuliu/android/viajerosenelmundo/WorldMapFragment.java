@@ -160,7 +160,7 @@ public class WorldMapFragment extends Fragment {
 			}
 	    } catch (InflateException e) {
 	        /* map is already there, just return view as it is */
-	    	Log.w(LOG_TAG, "Error inflating the view." + e.getLocalizedMessage());
+	    	Log.e(LOG_TAG, "Error inflating the view.", e);
 	    }
 	    return view;
 	}

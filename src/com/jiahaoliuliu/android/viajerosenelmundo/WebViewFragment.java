@@ -13,6 +13,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings.PluginState;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ProgressBarShowListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.onErrorReceivedListener;
@@ -25,6 +27,11 @@ public class WebViewFragment extends Fragment {
 	private onErrorReceivedListener onErrorReceivedListener;
 	private ProgressBarShowListener progressBarShownListener;
 	private String url;
+	
+	private MyWebChromeClient mWebChromeClient = null;
+	private View mCustomView;
+	private FrameLayout mCustomViewContainer;
+	private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -48,13 +55,16 @@ public class WebViewFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.web_view_fragment, container, false);
+		
+		mCustomViewContainer = (FrameLayout) view.findViewById(R.id.fullscreen_custom_content);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.setWebViewClient(new SampleWebClient());
-		webView.setWebChromeClient(new WebChromeClient());
+		webView.setWebChromeClient(new MyWebChromeClient());
 
 		WebSettings webSettings = webView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setBuiltInZoomControls(true);
+		webSettings.setLoadWithOverviewMode(true);
 		//webSettings.setPluginState(PluginState.ON);
 
 		if (url != null) {
@@ -80,17 +90,11 @@ public class WebViewFragment extends Fragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
         	progressBarShownListener.showProgressBar();
-        	view.setClickable(false);
-        	view.setLongClickable(false);
-        	view.setEnabled(false);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
         	progressBarShownListener.hideProgressBar();
-        	view.setClickable(true);
-        	view.setLongClickable(true);
-        	view.setEnabled(true);
         }
 
 		@Override
@@ -119,8 +123,51 @@ public class WebViewFragment extends Fragment {
 		}
 	}
 
+	private class MyWebChromeClient extends WebChromeClient {
+	    FrameLayout.LayoutParams LayoutParameters = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+	            FrameLayout.LayoutParams.MATCH_PARENT);
+
+	    @Override
+	    public void onShowCustomView(View view, CustomViewCallback callback) {
+	    	Log.v(LOG_TAG, "Trying to show the custom view.");
+	        // if a view already exists then immediately terminate the new one
+	        if (mCustomView != null) {
+	        	Log.w(LOG_TAG, "The custom view has been already created. Hiding it.");
+	            callback.onCustomViewHidden();
+	            return;
+	        }
+
+	        webView.setVisibility(View.GONE);
+	        mCustomViewContainer.addView(view);
+	        mCustomView = view;
+	        mCustomViewCallback = callback;
+	        mCustomViewContainer.setVisibility(View.VISIBLE);
+	    }
+
+	    @Override
+	    public void onHideCustomView() {
+	    	Log.v(LOG_TAG, "Trying to hide the custom view");
+	        if (mCustomView == null) {
+	        	Log.v(LOG_TAG, "The custom view does not exist.");
+	            return;
+	        } else {
+	            // Hide the custom view.  
+	            mCustomView.setVisibility(View.GONE);
+	            // Remove the custom view from its container.  
+	            mCustomViewContainer.removeView(mCustomView);
+	            mCustomView = null;
+	            mCustomViewContainer.setVisibility(View.GONE);
+	            mCustomViewCallback.onCustomViewHidden();
+	            // Show the content view.  
+	            webView.setVisibility(View.VISIBLE);
+	        }
+	    }
+	}
+	
 	public boolean goesBack() {
-		if (webView.canGoBack()) {
+		if (mCustomViewContainer != null) {
+	        mWebChromeClient.onHideCustomView();
+		} else if (webView.canGoBack()) {
 			webView.goBack();
 			return true;
 		}
