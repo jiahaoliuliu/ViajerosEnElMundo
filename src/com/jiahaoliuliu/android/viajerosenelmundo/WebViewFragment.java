@@ -75,7 +75,10 @@ public class WebViewFragment extends Fragment {
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setBuiltInZoomControls(true);
 		webSettings.setLoadWithOverviewMode(true);
+		// The follow control is needed to see the controls of "Telemadrid", but
+		// will broke others web views
 		//webSettings.setPluginState(PluginState.ON);
+		
 
 		if (url != null) {
 			webView.loadUrl(url);
