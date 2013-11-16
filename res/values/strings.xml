@@ -6,5 +6,15 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="marker_instruction">Haz click aquí para ver el vídeo.</string>
     <string name="error_google_maps_not_found">Error no se puede enlazar Google maps. Comprueba que lo tenga instalado.</string>
-
+    
+    <!-- Alert box -->
+    <string name="alert_about_title">Acerce de</string>
+    <string name="alert_about_message">Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n Contribuye su mejora poniendolo en un comentario y vontandola.\n\n Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n</string>
+	<string name="alert_about_button">Entendido</string>
+    
+	<string name="alert_exit_title">Salir de la aplicación</string>
+	<string name="alert_exit_message">¿Estás seguro de que quieres salir de la aplicación?</string>
+	<string name="alert_exit_positive_button">Sí</string>
+	<string name="alert_exit_negative_button">No</string>
+	
 </resources>

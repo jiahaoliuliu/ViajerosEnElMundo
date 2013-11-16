@@ -248,11 +248,9 @@ public class MainActivity extends SherlockFragmentActivity implements
     @Override
     protected Dialog onCreateDialog(int id) {
 		return new AlertDialog.Builder(this)
-        .setTitle("Acerce de")
-        .setMessage("Esta aplicación pretende reunir los programas de la televisión sobre viajes y ubicarlas en la mapa para facilitar la navegación.\n\n" +
-        		"Contribuye su mejora poniendolo en un comentario y vontandola.\n\n" +
-        		"Para cualquier otras cuestiones, enviad un correo a jiahaoliuliu@gmail.com \n\n")
-        .setPositiveButton("Entendido", new DialogInterface.OnClickListener() {
+        .setTitle(getResources().getString(R.string.alert_about_title))
+        .setMessage(getResources().getString(R.string.alert_about_message))
+        .setPositiveButton(getResources().getString(R.string.alert_about_button), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 /* User clicked OK so do some stuff */
@@ -427,9 +425,9 @@ public class MainActivity extends SherlockFragmentActivity implements
     private AlertDialog createCloseAlertDialog() {
     	return new AlertDialog.Builder(
                 context)
-        .setTitle("Salir de la aplicación")
-        .setMessage("¿Estás seguro de que quieres salir de la aplicación?")
-        .setPositiveButton("Sí",
+        .setTitle(getResources().getString(R.string.alert_exit_title))
+        .setMessage(getResources().getString(R.string.alert_exit_message))
+        .setPositiveButton(getResources().getString(R.string.alert_exit_positive_button),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,
@@ -437,7 +435,7 @@ public class MainActivity extends SherlockFragmentActivity implements
                     	finish();
                     }
                 })
-        .setNegativeButton("No",
+        .setNegativeButton(getResources().getString(R.string.alert_exit_negative_button),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,
