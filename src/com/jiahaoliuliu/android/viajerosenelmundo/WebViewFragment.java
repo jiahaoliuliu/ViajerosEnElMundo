@@ -88,22 +88,16 @@ public class WebViewFragment extends Fragment {
 	}
 
 	private class SampleWebClient extends WebViewClient {
-		
-		@Override
-		public boolean shouldOverrideUrlLoading (WebView view, String newUrl) {
-			if (url != null) {
-				view.loadUrl(url);
-			}
-			return true;
-		}
-		
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        	Log.v(LOG_TAG, "Start loading the web url " + url);
         	progressBarShownListener.showProgressBar();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
+        	Log.v(LOG_TAG, "Finished loading the web url " + url);
         	progressBarShownListener.hideProgressBar();
         }
 
@@ -174,6 +168,7 @@ public class WebViewFragment extends Fragment {
 	}
 	
 	public boolean goesBack() {
+		Log.v(LOG_TAG, "Goes back.");
 		if (mCustomView != null) {
 	        mWebChromeClient.onHideCustomView();
 		} else if (webView.canGoBack()) {
