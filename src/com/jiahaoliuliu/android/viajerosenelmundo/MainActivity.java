@@ -178,7 +178,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		if (savedInstanceState == null) {
 			if (!viajeros.isEmpty()) {
 				int randomPosition = randomPositionGenerator();
-				if (randomPosition > 0) {
+				if (randomPosition >= 0) {
 					selectItem(randomPosition, false);
 				} else {
 					Log.e(LOG_TAG, "Error selecting random city. The position is " + randomPosition);
@@ -231,7 +231,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		} else if (item.getItemId() == MENU_BUTTON_RANDOM_ID) {
 			if (!viajeros.isEmpty()) {
 				int randomPosition = randomPositionGenerator();
-				if (randomPosition > 0 ) {
+				if (randomPosition >= 0 ) {
 					selectItem(randomPosition, false);
 				} else {
 					Log.e(LOG_TAG, "Error getting the random city. The position is " + randomPosition);
