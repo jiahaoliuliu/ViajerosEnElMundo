@@ -53,7 +53,7 @@ public class WorldMapFragment extends Fragment {
 	private List<Viajero> viajeros;
 	// The callback to wait the list of viajeros to be ready for the first time.
 	private Callback listDataCallback;
-    private HashMap<Marker, String> urlMaps = new HashMap<Marker, String>();
+    private HashMap<Marker, Viajero> viajeroByMarker = new HashMap<Marker, Viajero>();
     private HashMap<LatLng, Marker> markerByLocation = new HashMap<LatLng, Marker>();
 
 	@Override
@@ -121,7 +121,7 @@ public class WorldMapFragment extends Fragment {
 					Marker marker = googleMap.addMarker(markerOptions);
 					
 					// Add the data to the hash map
-					urlMaps.put(marker, viajeroTmp.getUrl());
+					viajeroByMarker.put(marker, viajeroTmp);
 					markerByLocation.put(viajeroTmp.getPosition(), marker);
 					// Set the icon
 					switch (viajeroTmp.getChannel()) {
@@ -149,7 +149,12 @@ public class WorldMapFragment extends Fragment {
 					
 					@Override
 					public void onInfoWindowClick(Marker marker) {
-						onUrlReceivedListener.onUrlReceived(urlMaps.get(marker));
+						Viajero viajero = viajeroByMarker.get(marker);
+						if (viajero == null) {
+							Log.e(LOG_TAG, "The marker clicked by the user does not has any viajero associated. " + marker.getPosition());
+							return;
+						}
+						onUrlReceivedListener.onUrlReceived(viajero.getUrl(), viajero.getChannel());
 					}
 				});
 

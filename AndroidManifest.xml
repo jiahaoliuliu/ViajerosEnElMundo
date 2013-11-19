@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
  package="com.jiahaoliuliu.android.viajerosenelmundo"
- android:versionCode="14"
- android:versionName="1.13" >
+ android:versionCode="16"
+ android:versionName="2.0" >
 
  <uses-sdk
   android:minSdkVersion="8"
@@ -48,13 +48,13 @@
       android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
   <!-- Debug key -->
-  <meta-data
-      android:name="com.google.android.maps.v2.API_KEY"
-      android:value="AIzaSyBTiF9N4P02z0V3WGnPzC0SG7H49ojrxaA" />
-  <!-- Production key -->
   <!-- <meta-data
       android:name="com.google.android.maps.v2.API_KEY"
-      android:value="AIzaSyBtZfJZnLBFcfxErU52kwxVY5lJhnNtNEc" /> -->
+      android:value="AIzaSyBTiF9N4P02z0V3WGnPzC0SG7H49ojrxaA" />  -->
+  <!-- Production key -->
+  <meta-data
+      android:name="com.google.android.maps.v2.API_KEY"
+      android:value="AIzaSyBtZfJZnLBFcfxErU52kwxVY5lJhnNtNEc" />
  </application>
 
 </manifest>

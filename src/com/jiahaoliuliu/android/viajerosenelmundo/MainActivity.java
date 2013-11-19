@@ -11,6 +11,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.ListViajerosProvider;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnFullScreenRequestListener;
 import com.jiahaoliuliu.android.viajerosenelmundo.interfaces.OnUrlReceivedListener;
@@ -20,6 +21,7 @@ import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero;
 import com.jiahaoliuliu.android.viajerosenelmundo.model.Viajero.ChannelId;
 
 import android.media.AudioRecord.OnRecordPositionUpdateListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -30,6 +32,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.support.v4.widget.DrawerLayout;
@@ -359,14 +362,22 @@ public class MainActivity extends SherlockFragmentActivity implements
 		return viajeros;
 	}
 
-	public void onUrlReceived(String url) {
-		Log.v(LOG_TAG, "New url received: " + url);
-		// Try to load the web page
-		webViewFragment.setUrl(url);
-		FragmentTransaction ft = fragmentManager.beginTransaction();
-		ft.replace(R.id.content_frame, webViewFragment, WebViewFragment.class.toString());
-		ft.addToBackStack(WebViewFragment.class.toString());
-		ft.commit();
+	public void onUrlReceived(String url, ChannelId channelId) {
+		Log.v(LOG_TAG, "New url received: " + url + " of the channel " + channelId.toString());
+		// For Telemadrid open a new web view
+		if (channelId == ChannelId.TELEMADRID) {
+			Log.v(LOG_TAG, "The url belongs to Telemadrid");
+			Intent startBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			startActivity(startBrowserIntent);
+		} else {
+			Log.v(LOG_TAG, "The url does not belong to Telemadrid");
+			// Try to load the web page
+			webViewFragment.setUrl(url);
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.replace(R.id.content_frame, webViewFragment, WebViewFragment.class.toString());
+			ft.addToBackStack(WebViewFragment.class.toString());
+			ft.commit();
+		}
 	}
 
 	public void showProgressBar() {
@@ -596,7 +607,7 @@ public class MainActivity extends SherlockFragmentActivity implements
         }
     }
 
-    // Set the special case for "A" and "√Å"
+    // Set the special case for "A" and "Á"
     private boolean equalLetters(char firstLetter, char prevLetter) {
         if (firstLetter == 'A' && prevLetter == 'Á') {
         	return true;
