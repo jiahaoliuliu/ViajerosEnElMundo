@@ -584,8 +584,8 @@ public class MainActivity extends SherlockFragmentActivity implements
                 mDialogText.setVisibility(View.VISIBLE);
             }
             
-            // Special case for "√Å"
-            if (firstLetter == '√Å') {
+            // Special case for "Á"
+            if (firstLetter == 'Á') {
             	firstLetter = 'A';
             }
 
@@ -598,7 +598,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
     // Set the special case for "A" and "√Å"
     private boolean equalLetters(char firstLetter, char prevLetter) {
-        if (firstLetter == 'A' && prevLetter == '√Å') {
+        if (firstLetter == 'A' && prevLetter == 'Á') {
         	return true;
         } else {
         	return firstLetter == prevLetter;
