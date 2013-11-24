@@ -1,5 +1,6 @@
 <LinearLayout
      xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:ads="http://schemas.android.com/apk/res-auto"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
      android:orientation="horizontal">
@@ -13,8 +14,28 @@
         android:dividerHeight="0dp"
         android:background="#EEEEEE" />
     
-    <FrameLayout 
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        >
+        <FrameLayout 
+	        android:id="@+id/content_frame"
+	        android:layout_width="match_parent"
+	        android:layout_height="fill_parent" />
+	        
+        
+        <com.google.android.gms.ads.AdView
+	        android:id="@+id/ad"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerHorizontal="true"
+	        ads:adSize="BANNER"
+	        ads:adUnitId="ca-app-pub-4698167333868449/9863317014"/>
+	        
+        
+    </RelativeLayout>
 </LinearLayout>
