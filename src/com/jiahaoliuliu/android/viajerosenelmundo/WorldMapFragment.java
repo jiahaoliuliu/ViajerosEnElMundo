@@ -3,6 +3,8 @@ package com.jiahaoliuliu.android.viajerosenelmundo;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,6 +78,7 @@ public class WorldMapFragment extends Fragment {
 
 		this.context = activity;
 		this.activity = activity;
+
 	}
 	
 	@Override
@@ -96,6 +99,7 @@ public class WorldMapFragment extends Fragment {
 	        		errorDialog.show();
 		        }
 		    } else {
+
 				supportFragmentManager = this.getActivity().getSupportFragmentManager();
 				// Get the map
 				googleMap = ((SupportMapFragment)supportFragmentManager
@@ -162,6 +166,14 @@ public class WorldMapFragment extends Fragment {
 				if (googleMapCallback != null) {
 					googleMapCallback.done();
 				}
+
+				// Shows the ad
+				AdView adView = (AdView)view.findViewById(R.id.ad);
+			    AdRequest adRequest = new AdRequest.Builder()
+			    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+			    .addTestDevice("TEST_DEVICE_ID")
+			    .build();
+			    adView.loadAd(adRequest);
 			}
 	    } catch (InflateException e) {
 	        /* map is already there, just return view as it is */

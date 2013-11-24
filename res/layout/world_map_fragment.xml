@@ -1,7 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
@@ -13,7 +13,7 @@
         android:layout_above="@+id/ad"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <com.google.ads.AdView
+    <com.google.android.gms.ads.AdView
         android:id="@+id/ad"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -22,9 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-4698167333868449/9863317014"
-        ads:testDevices="TEST_EMULATOR,TEST_DEVICE_ID_GOES_HERE"
-        ads:loadAdOnCreate="true"/>
+        ads:adUnitId="ca-app-pub-4698167333868449/9863317014"/>
 
 
 </RelativeLayout>
